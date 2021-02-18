@@ -1,0 +1,8 @@
+name: 'Flat data action'
+inputs:
+  url:
+    description: "A URL containing data to fetch"
+    required: false
+runs:
+  using: 'node12'
+  main: 'dist/index.js'

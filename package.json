@@ -1,0 +1,32 @@
+{
+  "name": "flat-action",
+  "version": "1.0.0",
+  "description": "The GitHub action which powers data fetching for Flat",
+  "main": "index.js",
+  "scripts": {
+    "build": "tsc && ncc build lib/main.js",
+    "format": "prettier --write **/*.ts",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/githubocto/flat-action.git"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/githubocto/flat-action/issues"
+  },
+  "homepage": "https://github.com/githubocto/flat-action#readme",
+  "dependencies": {
+    "@actions/core": "^1.2.6",
+    "@actions/github": "^4.0.0",
+    "node-fetch": "^2.6.1",
+    "wretch": "^1.7.4"
+  },
+  "devDependencies": {
+    "@types/node": "^14.14.28",
+    "@vercel/ncc": "^0.27.0",
+    "prettier": "^2.2.1",
+    "typescript": "^4.1.5"
+  }
+}
