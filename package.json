@@ -4,7 +4,9 @@
   "description": "The GitHub action which powers data fetching for Flat",
   "main": "index.js",
   "scripts": {
-    "build": "tsc && ncc build lib/main.js",
+    "build": "tsc",
+    "package": "ncc build --source-map --license LICENSE lib/main.js",
+    "dist": "npm run build && npm run package",
     "format": "prettier --write **/*.ts",
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,4 +1,4 @@
-import core from '@actions/core'
+import * as core from '@actions/core'
 import wretch from 'wretch'
 
 wretch().polyfills({
@@ -7,7 +7,7 @@ wretch().polyfills({
 
 core.info("flat-actions loaded")
 
-async function run () {
+async function run (): Promise<void> {
   core.info("flat-actions run() invoked")
   const url = core.getInput('url')
   if (!url) {

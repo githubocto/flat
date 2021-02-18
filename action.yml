@@ -1,4 +1,6 @@
 name: 'Flat data action'
+description: 'The GitHub action which powers data fetching for Flat'
+author: 'GitHub OCTO'
 inputs:
   url:
     description: "A URL containing data to fetch"
