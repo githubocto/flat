@@ -18,8 +18,11 @@ async function run (): Promise<void> {
 
   wretch(url)
     .get()
-    .res(response => {
-      core.info(`Fetched: ${response.type}`)
+    .res(async response => {
+      core.info(`Response!`)
+      core.info(`Fetched: ${response.status} ${response.statusText}`)
+      response.headers.forEach((v,k) => core.info(`  [${k}]: ${v}`))
+      core.debug(await response.text())
     })
     .catch(error => {
       core.error(error)
