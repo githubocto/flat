@@ -5,12 +5,17 @@ wretch().polyfills({
   fetch: require('node-fetch')
 })
 
+core.info("flat-actions loaded")
+
 async function run () {
+  core.info("flat-actions run() invoked")
   const url = core.getInput('url')
   if (!url) {
     core.setFailed('Workflow requires a url to fetch!')
     return;
   }
+  core.debug(`** url is: "${url}"`)
+
   wretch(url)
     .get()
     .res(response => {
@@ -20,3 +25,8 @@ async function run () {
       core.error(error)
     })
 }
+
+run()
+  .catch(error => {
+    core.setFailed("Workflow failed! " + error.message)
+  })
