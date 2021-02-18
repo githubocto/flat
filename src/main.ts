@@ -14,9 +14,9 @@ async function run () {
   wretch(url)
     .get()
     .res(response => {
-      console.log("Fetched: ", response.type)
+      core.info(`Fetched: ${response.type}`)
     })
     .catch(error => {
-      console.error(error)
+      core.error(error)
     })
 }
