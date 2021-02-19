@@ -2,9 +2,23 @@ name: 'Flat data action'
 description: 'The GitHub action which powers data fetching for Flat'
 author: 'GitHub OCTO'
 inputs:
+  outfile:
+    description: "(Optional) The filename to use for writing data. Omit an extension to have one chosen automatically according to the response datatype."
+    default: "data"
+  format:
+    description: "(Optional) The format of data to output. One of 'csv' or 'json'"
+    default: 'csv'
+  connstring:
+    description: "A connection string for making a SQL query."
+    required: false
+  queryfile:
+    description: "A SQL query to execute for fetching data."
+    required: false
+    default: 'query.sql'
   url:
     description: "A URL containing data to fetch"
     required: false
+
 runs:
   using: 'node12'
   main: 'dist/index.js'

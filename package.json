@@ -23,7 +23,8 @@
     "@actions/core": "^1.2.6",
     "@actions/github": "^4.0.0",
     "node-fetch": "^2.6.1",
-    "wretch": "^1.7.4"
+    "wretch": "^1.7.4",
+    "zod": "^3.0.0-alpha.4"
   },
   "devDependencies": {
     "@types/node": "^14.14.28",
