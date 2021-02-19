@@ -7,7 +7,7 @@ inputs:
     default: "data"
   format:
     description: "(Optional) The format of data to output. One of 'csv' or 'json'"
-    default: 'csv'
+    default: 'json'
   connstring:
     description: "A connection string for making a SQL query."
     required: false
