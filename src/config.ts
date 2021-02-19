@@ -35,7 +35,11 @@ export function getConfig(): Config {
     }
   });
   core.debug(`Raw config: ${JSON.stringify(raw)}`)
-  return validate(raw)
+  try {
+    return validate(raw)    
+  } catch (error) {
+    throw new Error(`Invalid configuration!\nReceived: ${JSON.stringify(raw)}\nFailure:${error.message}`)
+  }
 }
 
 function validate(raw: unknown): Config {
