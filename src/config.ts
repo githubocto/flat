@@ -7,18 +7,18 @@ export type FormatEnum = z.infer<typeof FormatEnum>
 const CommonConfigSchema = z.object({
   outfile: z.string(),
   format: FormatEnum
-}).strict()
+})
 export type CommonConfig = z.infer<typeof CommonConfigSchema>
 
 const HTTPConfigSchema = z.object({
   url: z.string()
-}).merge(CommonConfigSchema).strict()
+}).merge(CommonConfigSchema)
 export type HTTPConfig = z.infer<typeof HTTPConfigSchema>
 
 const SQLConfigSchema = z.object({
   connstring: z.string(),
   queryfile: z.string(),
-}).merge(CommonConfigSchema).strict()
+}).merge(CommonConfigSchema)
 export type SQLConfig = z.infer<typeof SQLConfigSchema>
 
 const ConfigSchema = z.union([HTTPConfigSchema, SQLConfigSchema])
@@ -36,14 +36,16 @@ export function getConfig(): Config {
   });
   core.debug(`Raw config: ${JSON.stringify(raw)}`)
   try {
-    return validate(raw)    
+    if ('url' in raw) {
+      return HTTPConfigSchema.parse(raw)
+    } else if ('connstring' in raw) {
+      return SQLConfigSchema.parse(raw)
+    } else {
+      throw new Error('One of `url` or `connstring` inputs are required.')
+    }
   } catch (error) {
     throw new Error(`Invalid configuration!\nReceived: ${JSON.stringify(raw)}\nFailure:${error.message}`)
   }
-}
-
-function validate(raw: unknown): Config {
-  return ConfigSchema.parse(raw)
 }
 
 export function isHTTPConfig(config: Config): config is HTTPConfig {
