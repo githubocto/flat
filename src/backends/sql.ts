@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import { ConnectionString } from 'connection-string'
-import { writeFileSync } from 'fs'
-import { readFile } from 'fs/promises'
+import { readFileSync, writeFileSync } from 'fs'
 import { createConnection, DatabaseType } from 'typeorm'
 import { SQLConfig } from '../config'
 
@@ -15,11 +14,13 @@ function isValidDatabaseType(protocol: string): protocol is DatabaseType {
 
 export default async function fetchSQL(config: SQLConfig): Promise<void> {
   let connection
-  const query = await readFile(config.queryfile, {encoding: 'utf8'})
-    .catch(err => {
-      core.setFailed(err)
-      throw err
-    })
+  let query
+  try {
+    query = readFileSync(config.queryfile, {encoding: 'utf8'})
+  } catch (error) {
+    core.setFailed(`Unable to read queryfile ${config.queryfile}: ${error.message}`)
+    throw error
+  }
   
   const parsed = new ConnectionString(config.connstring)
   try {
