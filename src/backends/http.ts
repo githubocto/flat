@@ -1,7 +1,6 @@
 import * as core from '@actions/core'
 import { HTTPConfig } from '../config'
 import fs from 'fs'
-import path, { resolve } from 'path'
 import axios from 'axios'
 
 
