@@ -17,7 +17,9 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
   let connection
   let query
   try {
-    query = readFileSync(path.join('.github/workflows', config.queryfile), {encoding: 'utf8'})
+    const queryfilepath = path.join('.github/workflows', config.queryfile)
+    core.debug(queryfilepath)
+    query = readFileSync(queryfilepath, {encoding: 'utf8'})
   } catch (error) {
     core.setFailed(`Unable to read queryfile ${config.queryfile}: ${error.message}`)
     throw error
