@@ -4,6 +4,7 @@ import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
 
 async function run (): Promise<void> {
+  core.debug(`Node version: ${process.version}`)
   const config = getConfig()
   if (isHTTPConfig(config)) {
     fetchHTTP(config)
