@@ -3,6 +3,7 @@ import { ConnectionString } from 'connection-string'
 import { readFileSync, writeFileSync } from 'fs'
 import { createConnection, DatabaseType } from 'typeorm'
 import { SQLConfig } from '../config'
+import * as path from 'path'
 
 
 // TODO: wish there was a dynamic way to import this for runtime usage from the DatabaseType type
@@ -16,7 +17,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
   let connection
   let query
   try {
-    query = readFileSync(config.queryfile, {encoding: 'utf8'})
+    query = readFileSync(path.join('.github/workflows', config.queryfile), {encoding: 'utf8'})
   } catch (error) {
     core.setFailed(`Unable to read queryfile ${config.queryfile}: ${error.message}`)
     throw error
@@ -38,8 +39,6 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
       url: config.connstring
     })
 
-    
-    
   } catch (error) {
     core.setFailed(`Unable to connect to database: ${error.message}`)
     throw error
