@@ -1,6 +1,6 @@
 {
   "name": "flat-action",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "description": "The GitHub action which powers data fetching for Flat",
   "main": "index.js",
   "scripts": {
