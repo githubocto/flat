@@ -1,9 +1,10 @@
 import * as core from '@actions/core'
 import { ConnectionString } from 'connection-string'
-import { readFileSync, writeFileSync } from 'fs'
+import { createWriteStream, readFileSync, writeFileSync } from 'fs'
 import { createConnection, DatabaseType } from 'typeorm'
 import { SQLConfig } from '../config'
 import * as path from 'path'
+import stringify from 'csv-stringify'
 
 
 // TODO: wish there was a dynamic way to import this for runtime usage from the DatabaseType type
@@ -56,7 +57,18 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
 
   const outfile = `${config.outfile}.${config.format}`
   try {
-    writeFileSync(outfile, result)
+    switch (config.format) {
+      case 'csv':
+        const ws = createWriteStream(outfile, {encoding: 'utf8'})
+        stringify(result, {
+          header: true
+        }).pipe(ws)
+        break
+    
+      default:
+        writeFileSync(outfile, JSON.stringify(result))
+    }
+  
   } catch (error) {
     core.setFailed(`Unable to write results to ${outfile}: ${error.message}`)
     throw error    
