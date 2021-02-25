@@ -1,5 +1,5 @@
 import * as core from '@actions/core'
-import { execSync } from 'child_process'
+import { exec } from '@actions/exec'
 import fetchHTTP from './backends/http'
 import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
@@ -11,7 +11,7 @@ async function run (): Promise<void> {
   } else if (isSQLConfig(config)) {
     fetchSQL(config)
   }
-  const diffstat = execSync('git diff --numstat')
+  const diffstat = await exec('git diff --numstat')
   core.setOutput('diffstat', diffstat)
 }
 
