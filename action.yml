@@ -18,7 +18,9 @@ inputs:
   url:
     description: "A URL containing data to fetch"
     required: false
-
+outputs:
+  diffstat: # size of changed data
+    description: The diffstat of data changed in this run
 runs:
   using: 'node12'
   main: 'dist/index.js'
