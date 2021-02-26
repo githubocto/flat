@@ -19,8 +19,8 @@ inputs:
     description: "A URL containing data to fetch"
     required: false
 outputs:
-  diffstat: # size of changed data
-    description: The diffstat of data changed in this run
+  delta_bytes: # size of changed data
+    description: The overall number of bytes changed in the output data this run (current size - previous size)
 runs:
   using: 'node12'
   main: 'dist/index.js'
