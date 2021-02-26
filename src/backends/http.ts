@@ -3,21 +3,19 @@ import { HTTPConfig } from '../config'
 import fs from 'fs'
 import axios from 'axios'
 
-
 export default async function fetchHTTP(config: HTTPConfig): Promise<void> {
   core.info('Fetching: HTTP')
-  axios({
-    method: 'get',
-    url: config.url,
-    responseType: 'stream'
-  })
-    .then(response => {
-      core.info(`Response: ${response.status} ${response.statusText}`)
-      const contentType: string | null = response.headers['content-type']
-      core.debug(`Content-type: ${contentType}`)
-      response.data.pipe(fs.createWriteStream(`${config.outfile}.${config.format}`))
+  try {
+    const response = await axios({
+      method: 'get',
+      url: config.url,
+      responseType: 'stream'
     })
-    .catch(error => {
-      core.setFailed(error)
-    })
+    core.info(`Response: ${response.status} ${response.statusText}`)
+    const contentType: string | null = response.headers['content-type']
+    core.debug(`Content-type: ${contentType}`)
+    response.data.pipe(fs.createWriteStream(`${config.outfile}.${config.format}`))      
+  } catch (error) {
+    core.setFailed(error)
+  }
 }

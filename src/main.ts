@@ -10,6 +10,9 @@ async function run (): Promise<void> {
   
   core.startGroup('Configuration')
   const config = getConfig()
+  const username = process.env.GITHUB_ACTOR as string
+  await exec('git', ['config', 'user.name', username])
+  await exec('git', ['config', 'user.email', `${username}@users.noreply.github.com`])
   core.endGroup()
 
   core.startGroup('Fetch data')
@@ -20,7 +23,9 @@ async function run (): Promise<void> {
   }
   core.endGroup()
   
+
   core.startGroup('Calculating diffstat')
+  await exec('git', ['add', '-A'])
   const diffstat = execSync('git diff --numstat').toString('utf8')
   core.info(diffstat)
   core.setOutput('diffstat', diffstat)
@@ -31,10 +36,6 @@ async function run (): Promise<void> {
   }
 
   core.startGroup('Committing new data')
-  const username = process.env.GITHUB_ACTOR as string
-  await exec('git', ['config', 'user.name', username])
-  await exec('git', ['config', 'user.email', `${username}@users.noreply.github.com`])
-  await exec('git', ['add', '-A'])
   const msg = `Latest data: ${new Date().toISOString()}`
   core.info(`Committing "${msg}"`)
   await exec('git', ['commit', '-m', msg])
