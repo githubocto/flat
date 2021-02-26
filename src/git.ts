@@ -20,7 +20,13 @@ function withListenerOpts(s: string): ExecOptions  {
 export async function gitStatus(): Promise<GitStatus[]> {
   core.debug('Getting gitStatus()')
   let output = ''
-  await exec('git', ['status', '-s'], withListenerOpts(output))
+  await exec('git', ['status', '-s'], {
+    listeners: {
+      stdout: (data: Buffer) => {
+        output += data.toString()
+      }
+    }
+  })
   core.debug(`=== output was:\n${output}`)
   return output.split('\n').map(l => {
     const chunks = l.trim().split(/\s+/)
