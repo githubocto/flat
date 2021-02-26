@@ -28,7 +28,7 @@ export async function gitStatus(): Promise<GitStatus[]> {
     }
   })
   core.debug(`=== output was:\n${output}`)
-  return output.split('\n').map(l => {
+  return output.split('\n').filter(l => l != '').map(l => {
     const chunks = l.trim().split(/\s+/)
     return {
       flag: chunks[0],
