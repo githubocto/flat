@@ -15,8 +15,11 @@ function isValidDatabaseType(protocol: string): protocol is DatabaseType {
 }
 
 export default async function fetchSQL(config: SQLConfig): Promise<void> {
+  core.info('Fetching: SQL')
   let connection
   let query
+
+  core.debug('Reading query file')
   try {
     const queryfilepath = path.join('.github/workflows', config.queryfile)
     core.debug(queryfilepath)
@@ -26,6 +29,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
     throw error
   }
   
+  core.debug('Connecting to database')
   const parsed = new ConnectionString(config.connstring)
   try {
     const protocol = parsed.protocol
@@ -47,6 +51,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
     throw error
   }
 
+  core.info("Querying database")
   let result
   try {
     result = await connection.query(query)
@@ -59,6 +64,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
   try {
     switch (config.format) {
       case 'csv':
+        core.info("Writing CSV")
         const ws = createWriteStream(outfile, {encoding: 'utf8'})
         stringify(result, {
           header: true
@@ -66,6 +72,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
         break
     
       default:
+        core.info("Writing JSON")
         writeFileSync(outfile, JSON.stringify(result))
     }
   
