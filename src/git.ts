@@ -18,8 +18,10 @@ function withListenerOpts(s: string): ExecOptions  {
 }
 
 export async function gitStatus(): Promise<GitStatus[]> {
+  core.debug('Getting gitStatus()')
   let output = ''
   await exec('git', ['status', '-s'], withListenerOpts(output))
+  core.debug(`=== output was:\n${output}`)
   return output.split('\n').map(l => {
     const chunks = l.trim().split(/\s+/)
     return {
@@ -55,6 +57,7 @@ async function diffSize(file: GitStatus): Promise<number> {
 
 export async function diff(): Promise<number> {
   const statuses = await gitStatus()
+  core.debug(`Parsed statuses: ${statuses.map(s=>JSON.stringify(s)).join(', ')}`)
   statuses.forEach(s => core.debug(`${s.flag} ${s.path}`))
   const sizes = await Promise.all(statuses.map(diffSize))
   return sizes.reduce((acc, cur) => acc + cur)
