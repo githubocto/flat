@@ -14,7 +14,7 @@ Just as [materialized views](https://en.wikipedia.org/wiki/Materialized_view) ma
 
 ✨ Best used in tandem with the [Flat VS Code Extension](https://github.com/githubocto/flat-vscode).
 
-Flat streamlines a pattern popularized by @simonw (["git scraping"](https://simonwillison.net/2020/Oct/9/git-scraping/)) and @alex ([2020 US election tracker](https://github.com/alex/nyt-2020-election-scraper)). The pattern of pulling data into git is an interesting one that deserves a dead-simple developer experience. Flat is an experiment from GitHub's Office of the CTO to make it easier for anyone to employ this pattern.
+Flat streamlines a pattern popularized by [Simon Willison](https://simonwillison.net/2020/Oct/9/git-scraping/) and [Alex Gaynor](https://github.com/alex/nyt-2020-election-scraper)). The pattern of pulling data into git is an interesting one that deserves a dead-simple developer experience. Flat is an experiment from GitHub's Office of the CTO to make it easier for anyone to employ this pattern.
 ## Why would I want to use this?
 
 Ultimately, Flat is about getting data into your repo with a minimum of fuss. These are some examples of what you can use it for, but this is by no means an exhaustive list.
