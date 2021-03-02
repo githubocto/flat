@@ -1,0 +1,6 @@
+{
+    "search.exclude": {
+        "**/dist": true,
+        "**/lib": true
+    }
+}
