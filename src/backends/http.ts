@@ -22,12 +22,15 @@ export default async function fetchHTTP(config: HTTPConfig): Promise<void> {
   }
 }
 
-function determineFilename(response: AxiosResponse, config: HTTPConfig): string {
+export function determineFilename(response: AxiosResponse, config: HTTPConfig): string {
 
   // if there's a content-disposition header, use that
-  const cd = parse(response.headers['content-disposition'])
-  if (cd.parameters?.filename) {
-    return basename(cd.parameters.filename)
+  const contentDisposition: string | undefined = response.headers['content-disposition']
+  if (contentDisposition) {
+    const cd = parse(contentDisposition)
+    if (cd) {
+      return basename(cd.parameters.filename)
+    }  
   }
 
   // otherwise, try to use content-type
