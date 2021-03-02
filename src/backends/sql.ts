@@ -21,16 +21,16 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
 
   core.debug('Reading query file')
   try {
-    const queryfilepath = path.join('.github/workflows', config.queryfile)
+    const queryfilepath = path.join('.github/workflows', config.sql_queryfile)
     core.debug(queryfilepath)
     query = readFileSync(queryfilepath, {encoding: 'utf8'})
   } catch (error) {
-    core.setFailed(`Unable to read queryfile ${config.queryfile}: ${error.message}`)
+    core.setFailed(`Unable to read queryfile ${config.sql_queryfile}: ${error.message}`)
     throw error
   }
   
   core.debug('Connecting to database')
-  const parsed = new ConnectionString(config.connstring)
+  const parsed = new ConnectionString(config.sql_connstring)
   try {
     const protocol = parsed.protocol
     if (!protocol) {
@@ -43,7 +43,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
     // @ts-ignore
     connection = await createConnection({
       type: protocol,
-      url: config.connstring
+      url: config.sql_connstring
     })
 
   } catch (error) {
@@ -60,9 +60,9 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
     throw error
   }
 
-  const outfile = `${config.outfile}.${config.format}`
+  const outfile = `${config.outfile_basename}.${config.sql_format}`
   try {
-    switch (config.format) {
+    switch (config.sql_format) {
       case 'csv':
         core.info("Writing CSV")
         const ws = createWriteStream(outfile, {encoding: 'utf8'})

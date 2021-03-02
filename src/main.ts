@@ -1,6 +1,5 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
-import { execSync } from 'child_process'
 import fetchHTTP from './backends/http'
 import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
