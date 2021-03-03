@@ -1,10 +1,14 @@
 import { AxiosResponse } from 'axios'
 import { HTTPConfig } from '../config'
-import { determineFilename } from './http'
+import fetchHTTP, { determineFilename } from './http'
 import * as core from '@actions/core'
+import axios from 'axios'
+import fs from 'fs'
+import { PassThrough } from 'stream'
 
 jest.mock('@actions/core')
-
+jest.mock('axios')
+jest.mock('fs')
 
 test('uses filename from content-disposition', () => {
   const response = {
@@ -79,6 +83,41 @@ test('Uses outfile_basename when neither content-type or content-disposition is 
   expect(coreMock).toBeCalledTimes(1)
 })
 
+it('fetches data over HTTP', async () => {
+  const config = {
+    outfile_basename: 'data',
+    http_url: 'https://foo.bar'
+  }
 
+  const mockWritable = new PassThrough()
+  const mockReadable = new PassThrough()
+  const response = {
+    headers: {
+      'content-disposition': 'attachment; filename="lala.txt"',
+      'content-type': 'text/plain; charset=UTF-8',
+    },
+    data: mockReadable
+  }
+  //@ts-ignore
+  axios.get.mockResolvedValue(response)
+  //@ts-ignore
+  fs.createWriteStream.mockReturnValueOnce(mockWritable)
+  
+  expect(await fetchHTTP(config)).toBeUndefined()
+})
+
+
+it('throws an error if HTTP request fails', async () => {
+  const config = {
+    outfile_basename: 'data',
+    http_url: 'https://foo.bar'
+  }
+
+  const err = new Error('oh snap')
+  //@ts-ignore
+  axios.get.mockRejectedValue(err)
+  
+  await expect(fetchHTTP(config)).rejects.toEqual(err)
+})
 
 

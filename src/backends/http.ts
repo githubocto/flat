@@ -9,16 +9,15 @@ import { extension } from 'es-mime-types'
 export default async function fetchHTTP(config: HTTPConfig): Promise<void> {
   core.info('Fetching: HTTP')
   try {
-    const response = await axios({
+    const response = await axios.get(config.http_url, {
       method: 'get',
-      url: config.http_url,
       responseType: 'stream'
     })
-
     const filename = determineFilename(response, config)
-    response.data.pipe(fs.createWriteStream(filename))      
+    response.data.pipe(fs.createWriteStream(filename)) 
   } catch (error) {
     core.setFailed(error)
+    throw error
   }
 }
 
