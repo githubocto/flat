@@ -2,5 +2,6 @@
     "search.exclude": {
         "**/dist": true,
         "**/lib": true
-    }
+    },
+    "editor.formatOnSave": true
 }
