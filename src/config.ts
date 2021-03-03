@@ -36,7 +36,7 @@ export function getConfig(): Config {
   });
   core.debug(`Raw config: ${JSON.stringify(raw)}`)
   try {
-    if ('url' in raw) {
+    if ('http_url' in raw) {
       return HTTPConfigSchema.parse(raw)
     } else if ('sql_connstring' in raw) {
       return SQLConfigSchema.parse(raw)
