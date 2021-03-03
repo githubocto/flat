@@ -37,9 +37,8 @@ async function run(): Promise<void> {
   }
 
   core.startGroup('Committing new data')
-  const msg = `Latest data: ${new Date().toISOString()} (${
-    bytes > 0 && '+'
-  }${bytes}b)`
+  const sign = bytes > 0 ? '+' : '-'
+  const msg = `Latest data: ${new Date().toISOString()} (${sign}${bytes}b)`
   core.info(`Committing "${msg}"`)
   await exec('git', ['commit', '-m', msg])
   await exec('git', ['push'])
