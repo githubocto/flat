@@ -5,13 +5,17 @@ import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
 import { diff } from './git'
 
-async function run (): Promise<void> {
+async function run(): Promise<void> {
   core.info('[INFO] Usage https://github.com/githubocto/flat#readme')
   core.startGroup('Configuration')
   const config = getConfig()
   const username = process.env.GITHUB_ACTOR as string
   await exec('git', ['config', 'user.name', username])
-  await exec('git', ['config', 'user.email', `${username}@users.noreply.github.com`])
+  await exec('git', [
+    'config',
+    'user.email',
+    `${username}@users.noreply.github.com`,
+  ])
   core.endGroup()
 
   core.startGroup('Fetch data')
@@ -21,7 +25,6 @@ async function run (): Promise<void> {
     await fetchSQL(config)
   }
   core.endGroup()
-  
 
   core.startGroup('Calculating diffstat')
   await exec('git', ['add', '-A'])
@@ -34,14 +37,15 @@ async function run (): Promise<void> {
   }
 
   core.startGroup('Committing new data')
-  const msg = `Latest data: ${new Date().toISOString()} (${bytes > 0 && '+'}${bytes}b)`
+  const msg = `Latest data: ${new Date().toISOString()} (${
+    bytes > 0 && '+'
+  }${bytes}b)`
   core.info(`Committing "${msg}"`)
   await exec('git', ['commit', '-m', msg])
   await exec('git', ['push'])
   core.endGroup()
 }
 
-run()
-  .catch(error => {
-    core.setFailed("Workflow failed! " + error.message)
-  })
+run().catch(error => {
+  core.setFailed('Workflow failed! ' + error.message)
+})
