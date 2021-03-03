@@ -51,6 +51,7 @@ async function diffSize(file: GitStatus): Promise<number> {
       case 'M':
         // get old size and compare
         const oldSize = await getHeadSize(file.path)
+        core.debug(`oldsize: ${oldSize}`)
         return oldSize === undefined ? stat.size : stat.size - oldSize
       
       case 'A':
