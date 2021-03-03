@@ -42,15 +42,13 @@ export async function gitStatus(): Promise<GitStatus[]> {
 
 async function getHeadSize(path: string): Promise<number | undefined> {
   let raw = ''
-  const exitcode = await exec(
-    'git',
-    ['cat-file', '-s', `HEAD:${path}`],{
-      listeners: {
-        stdline: (data: string) => {
-          raw += data
-        },
+  const exitcode = await exec('git', ['cat-file', '-s', `HEAD:${path}`], {
+    listeners: {
+      stdline: (data: string) => {
+        raw += data
       },
-    })
+    },
+  })
   core.debug(`raw cat-file output: ${exitcode} '${raw}'`)
   if (exitcode === 0) {
     return parseInt(raw, 10)
