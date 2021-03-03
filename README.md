@@ -39,7 +39,9 @@ The easiest way to get a Flat fetcher up and running is with the [flat-vscode ex
 1. Using VS Code on your desktop.
 2. Creating a [GitHub Codespace](https://github.com/features/codespaces) in the repository you wish to fetch data into.
 
-To use it, [install the extension]() and then invoke `flat` from the command palette (Mac: ⌘⇧P, Others:ctrl-shift-P).
+To use it, [install the extension]() and then click the Flat icon in the activity bar.
+
+[TK ADD PICTURE]
 
 ### Manually in a GitHub Actions workflow
 
