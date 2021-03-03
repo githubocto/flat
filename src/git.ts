@@ -47,6 +47,7 @@ async function getHeadSize(path: string): Promise<number | undefined> {
     ['cat-file', '-s', `HEAD:${path}`],
     withListenerOpts(raw)
   )
+  core.debug(`raw cat-file output: '${raw}'`)
   if (exitcode === 0) {
     return parseInt(raw, 10)
   }
