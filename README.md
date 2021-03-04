@@ -2,8 +2,10 @@
   <img src="docs/logo.png" width=512>
 </p>
 
-[![release](https://img.shields.io/github/release/githubocto/flat.svg)](https://github.com/githubocto/flat/releases/latest)
-[![GitHub release date](https://img.shields.io/github/release-date/githubocto/flat.svg)](https://github.com/githubocto/flat/releases)
+<p align="center">
+  <img src="https://img.shields.io/github/release/githubocto/flat.svg">
+  <img src="https://img.shields.io/github/release-date/githubocto/flat.svg">
+</p>
 
 # Flat
 
