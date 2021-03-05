@@ -27,6 +27,7 @@ async function run(): Promise<void> {
   core.endGroup()
 
   core.startGroup('Calculating diffstat')
+  await exec('ls -l')
   await exec('git', ['add', '-A'])
   const bytes = await diff()
   core.setOutput('delta_bytes', bytes)
