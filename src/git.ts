@@ -7,16 +7,6 @@ export type GitStatus = {
   path: string
 }
 
-function withListenerOpts(s: string): ExecOptions {
-  return {
-    listeners: {
-      stdout: (data: Buffer) => {
-        s += data.toString()
-      },
-    },
-  }
-}
-
 export async function gitStatus(): Promise<GitStatus[]> {
   core.debug('Getting gitStatus()')
   let output = ''
