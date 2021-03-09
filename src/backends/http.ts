@@ -14,7 +14,12 @@ export default async function fetchHTTP(config: HTTPConfig): Promise<void> {
       responseType: 'stream',
     })
     const filename = determineFilename(response, config)
-    await response.data.pipe(fs.createWriteStream(filename))
+    const writer = fs.createWriteStream(filename)
+    response.data.pipe(writer)
+    await new Promise((resolve, reject) => {
+      writer.on('finish', resolve)
+      writer.on('error', reject)
+    })
   } catch (error) {
     core.setFailed(error)
     throw error

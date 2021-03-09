@@ -89,10 +89,14 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
     switch (config.sql_format) {
       case 'csv':
         core.info('Writing CSV')
-        const ws = createWriteStream(outfile, { encoding: 'utf8' })
-        await stringify(result, {
+        const writer = createWriteStream(outfile, { encoding: 'utf8' })
+        stringify(result, {
           header: true,
-        }).pipe(ws)
+        }).pipe(writer)
+        await new Promise((resolve, reject) => {
+          writer.on('finish', resolve)
+          writer.on('error', reject)
+        })
         break
 
       default:

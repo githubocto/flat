@@ -86,7 +86,7 @@ test('Uses outfile_basename when neither content-type or content-disposition is 
 it('fetches data over HTTP', async () => {
   const config = {
     outfile_basename: 'data',
-    http_url: 'https://foo.bar'
+    http_url: 'https://foo.bar',
   }
 
   const mockWritable = new PassThrough()
@@ -96,28 +96,26 @@ it('fetches data over HTTP', async () => {
       'content-disposition': 'attachment; filename="lala.txt"',
       'content-type': 'text/plain; charset=UTF-8',
     },
-    data: mockReadable
+    data: mockReadable,
   }
   //@ts-ignore
   axios.get.mockResolvedValue(response)
   //@ts-ignore
   fs.createWriteStream.mockReturnValueOnce(mockWritable)
-  
+  mockWritable.end()
+
   expect(await fetchHTTP(config)).toBeUndefined()
 })
-
 
 it('throws an error if HTTP request fails', async () => {
   const config = {
     outfile_basename: 'data',
-    http_url: 'https://foo.bar'
+    http_url: 'https://foo.bar',
   }
 
   const err = new Error('oh snap')
   //@ts-ignore
   axios.get.mockRejectedValue(err)
-  
+
   await expect(fetchHTTP(config)).rejects.toEqual(err)
 })
-
-
