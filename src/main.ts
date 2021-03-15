@@ -9,7 +9,7 @@ async function run(): Promise<void> {
   core.info('[INFO] Usage https://github.com/githubocto/flat#readme')
   core.startGroup('Configuration')
   const config = getConfig()
-  const username = process.env.GITHUB_ACTOR as string
+  const username = 'flat-data'
   await exec('git', ['config', 'user.name', username])
   await exec('git', [
     'config',
