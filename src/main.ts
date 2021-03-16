@@ -19,10 +19,17 @@ async function run(): Promise<void> {
   core.endGroup()
 
   core.startGroup('Fetch data')
+  let filename = ''
   if (isHTTPConfig(config)) {
-    await fetchHTTP(config)
+    filename = await fetchHTTP(config)
   } else if (isSQLConfig(config)) {
-    await fetchSQL(config)
+    filename = await fetchSQL(config)
+  } else {
+    // typescript should preclude us from ever being here
+    // because config is HTTPConfig | SQLConfig
+    // But to be on the safe side, blow up if execution
+    // has reached this point.
+    core.setFailed('Unable to read a coherent action configuration')
   }
   core.endGroup()
 
@@ -38,9 +45,18 @@ async function run(): Promise<void> {
 
   core.startGroup('Committing new data')
   const sign = bytes >= 0 ? '+' : ''
-  const msg = `Latest data: ${new Date().toISOString()} (${sign}${bytes}b)`
+  const date = new Date().toISOString()
+  const msg = `Latest data: ${date} (${sign}${bytes}b)`
+  const meta = JSON.stringify(
+    {
+      files: [{ name: filename, deltaBytes: bytes, date: date }],
+    },
+    undefined,
+    2
+  )
   core.info(`Committing "${msg}"`)
-  await exec('git', ['commit', '-m', msg])
+  core.debug(meta)
+  await exec('git', ['commit', '-m', msg + '\n' + meta])
   await exec('git', ['push'])
   core.endGroup()
 }
