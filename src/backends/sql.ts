@@ -31,7 +31,7 @@ function isValidDatabaseType(protocol: string): protocol is DatabaseType {
   return TYPEORM_PROTOCOLS.includes(protocol)
 }
 
-export default async function fetchSQL(config: SQLConfig): Promise<void> {
+export default async function fetchSQL(config: SQLConfig): Promise<string> {
   core.info('Fetching: SQL')
   let connection
   let query
@@ -103,6 +103,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<void> {
         core.info('Writing JSON')
         await writeFileSync(outfile, JSON.stringify(result))
     }
+    return outfile
   } catch (error) {
     core.setFailed(`Unable to write results to ${outfile}: ${error.message}`)
     throw error

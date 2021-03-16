@@ -104,7 +104,7 @@ it('fetches data over HTTP', async () => {
   fs.createWriteStream.mockReturnValueOnce(mockWritable)
   mockWritable.end()
 
-  expect(await fetchHTTP(config)).toBeUndefined()
+  expect(await fetchHTTP(config)).toBe('lala.txt')
 })
 
 it('throws an error if HTTP request fails', async () => {

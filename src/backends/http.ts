@@ -6,7 +6,7 @@ import { parse } from '@tinyhttp/content-disposition'
 import { basename } from 'path'
 import { extension } from 'es-mime-types'
 
-export default async function fetchHTTP(config: HTTPConfig): Promise<void> {
+export default async function fetchHTTP(config: HTTPConfig): Promise<string> {
   core.info('Fetching: HTTP')
   try {
     const response = await axios.get(config.http_url, {
@@ -15,11 +15,13 @@ export default async function fetchHTTP(config: HTTPConfig): Promise<void> {
     })
     const filename = determineFilename(response, config)
     const writer = fs.createWriteStream(filename)
+    let bytesWritten = 0
     response.data.pipe(writer)
     await new Promise((resolve, reject) => {
       writer.on('finish', resolve)
       writer.on('error', reject)
     })
+    return filename
   } catch (error) {
     core.setFailed(error)
     throw error
