@@ -20,8 +20,10 @@ async function run(): Promise<void> {
 
   core.startGroup('Fetch data')
   let filename = ''
+  let source
   if (isHTTPConfig(config)) {
     filename = await fetchHTTP(config)
+    source = config.http_url
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
   } else {
@@ -49,7 +51,7 @@ async function run(): Promise<void> {
   const msg = `Latest data: ${date} (${sign}${bytes}b)`
   const meta = JSON.stringify(
     {
-      files: [{ name: filename, deltaBytes: bytes, date: date }],
+      files: [{ name: filename, deltaBytes: bytes, date, source }],
     },
     undefined,
     2
