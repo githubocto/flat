@@ -127,6 +127,12 @@ The name of the file containing the SQL query that will be issued to the databas
 
 A signed number describing the number of bytes that changed in this run. If the new data is smaller than the existing, committed data, this will be a negative number.
 
+## Postprocessing
+
+### `postprocess`
+
+This is the path to a script that will be invoked to postprocess your data after it is fetched. More docs coming soon.
+
 ---
 
 # Contributing

@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
+import { execSync } from 'node:child_process'
 import fetchHTTP from './backends/http'
 import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
@@ -35,8 +36,22 @@ async function run(): Promise<void> {
   }
   core.endGroup()
 
+  core.debug(`*** postprocess is: ${config.postprocess}`)
+  if (config.postprocess) {
+    core.startGroup('Postprocess')
+    try {
+      // TODO: is /dist the CWD at runtime?
+      filename = execSync(
+        `deno run -A ./postprocessing_shim.ts ${config.postprocess} ${filename}`
+      ).toString()
+    } catch (error) {
+      core.setFailed(error)
+    }
+    core.endGroup()
+  }
+
   core.startGroup('Calculating diffstat')
-  await exec('git', ['add', '-A'])
+  await exec('git', ['add', filename])
   const bytes = await diff()
   core.setOutput('delta_bytes', bytes)
   core.endGroup()

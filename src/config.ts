@@ -6,6 +6,7 @@ export type FormatEnum = z.infer<typeof FormatEnum>
 
 const CommonConfigSchema = z.object({
   outfile_basename: z.string(),
+  postprocess: z.string().optional(),
 })
 export type CommonConfig = z.infer<typeof CommonConfigSchema>
 
@@ -36,6 +37,7 @@ export function getConfig(): Config {
     'sql_format',
     'sql_connstring',
     'sql_queryfile',
+    'postprocess',
   ]
   keys.forEach(k => {
     const v = core.getInput(k)

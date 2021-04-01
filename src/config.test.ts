@@ -1,4 +1,10 @@
-import { Config, getConfig, HTTPConfig } from './config'
+import {
+  Config,
+  getConfig,
+  HTTPConfig,
+  isHTTPConfig,
+  isSQLConfig,
+} from './config'
 import * as core from '@actions/core'
 jest.mock('@actions/core')
 
@@ -89,4 +95,42 @@ it('prefers HTTP configs', () => {
     http_url: 'https://google.com',
     outfile_basename: 'data',
   })
+})
+
+it('accepts a postprocess string', () => {
+  const config = {
+    http_url: 'https://google.com',
+    outfile_basename: 'data',
+    sql_queryfile: 'query.sql',
+    sql_format: 'json',
+    postprocess: 'path/to/script.ts',
+  }
+  const coreMock = jest.spyOn(core, 'getInput')
+  // @ts-ignore
+  coreMock.mockImplementation(k => config[k])
+  expect(getConfig()).toEqual({
+    http_url: config.http_url,
+    outfile_basename: config.outfile_basename,
+    postprocess: config.postprocess,
+  })
+})
+
+it('correctly identifies configs', () => {
+  const http: Config = {
+    http_url: 'https://google.com',
+    outfile_basename: 'data',
+    sql_queryfile: 'query.sql',
+    sql_format: 'json',
+    postprocess: 'path/to/script.ts',
+  }
+  const sql: Config = {
+    sql_connstring: 'SECRETDATAHERE',
+    outfile_basename: 'data',
+    sql_queryfile: 'query.sql',
+    sql_format: 'json',
+  }
+  expect(isHTTPConfig(http)).toEqual(true)
+  expect(isHTTPConfig(sql)).toEqual(false)
+  expect(isSQLConfig(sql)).toEqual(true)
+  expect(isSQLConfig(http)).toEqual(false)
 })
