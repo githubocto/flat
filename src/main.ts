@@ -54,11 +54,11 @@ async function run(): Promise<void> {
   //   ).toString()
   // )
 
-  core.debug(`*** __filename: ${__filename}`)
+  core.debug(`*** __dirname: ${__dirname}`)
 
   core.debug(
-    `*** __filename/../postprocess/shim.ts: ${join(
-      __filename,
+    `*** __dirname/../postprocess/shim.ts: ${join(
+      __dirname,
       '../postprocess/shim.ts'
     )}`
   )
@@ -73,7 +73,7 @@ async function run(): Promise<void> {
       // /home/runner/work/_actions/githubocto/flat/postprocessing/
       // TODO: `Postprocessing` needs to be a branch identifier, how do we get this at runtime?
       filename = execSync(
-        `deno run -A ${join(__filename, '../postprocess/shim.ts')} ${
+        `deno run -A ${join(__dirname, '../postprocess/shim.ts')} ${
           config.postprocess
         } ${filename}`
       ).toString()
