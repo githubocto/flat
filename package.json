@@ -5,7 +5,7 @@
   "main": "index.js",
   "scripts": {
     "build": "tsc",
-    "package": "ncc build --source-map --license LICENSE lib/main.js",
+    "package": "ncc build --source-map --license LICENSE --target es2020 lib/main.js",
     "dist": "npm run build && npm run package",
     "format": "prettier --write **/*.ts",
     "test": "jest"

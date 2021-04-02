@@ -1,15 +1,19 @@
 {
   "compilerOptions": {
-    "target": "es6",
+    "target": "es2020",
     "module": "commonjs",
+    "moduleResolution": "node",
     "outDir": "./lib",
     "rootDir": "./src",
+    "lib": ["es2020"],
     "strict": true,
     "noImplicitAny": true,
     "esModuleInterop": true,
     "strictNullChecks": true,
     "emitDecoratorMetadata": true,
-    "experimentalDecorators": true
+    "experimentalDecorators": true,
+    "skipLibCheck": true,
+    "forceConsistentCasingInFileNames": true
   },
   "exclude": ["node_modules", "postprocess"]
 }
