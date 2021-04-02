@@ -5,6 +5,6 @@ console.log('DENO ARGS: ', args)
 // Get the name of the require script
 // It must default export a function
 // We invoke the function with the filename to process
-const fn = require(args._[1])
+const fn = await import(args._[1])
 
 fn(args._[0])
