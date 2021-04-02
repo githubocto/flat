@@ -52,11 +52,15 @@ async function run(): Promise<void> {
       //   https://github.com/webpack/webpack/issues/8826
       // So, the following works, but it's finicky, beware, be warned.
       const shim = '../postprocess/shim.ts'
-      filename = execSync(
-        `deno run -q -A ${join(__dirname, shim)} ${
-          config.postprocess
-        } ${filename}`
-      ).toString()
+      const { output, newfilename } = JSON.parse(
+        execSync(
+          `deno run -q -A ${join(__dirname, shim)} ${
+            config.postprocess
+          } ${filename}`
+        ).toString()
+      )
+      core.debug(stdout)
+      filename = newfilename
       core.debug(`Postprocessing filename returned: ${filename}`)
     } catch (error) {
       core.setFailed(error)
@@ -68,7 +72,7 @@ async function run(): Promise<void> {
   core.debug(execSync(`ls -la`).toString())
 
   core.startGroup('Calculating diffstat')
-  await exec('git', ['add', '-A']) // TODO: should be filename instead of -A, but it fails otherwise
+  await exec('git', ['add', filename]) // TODO: should be filename instead of -A, but it fails otherwise
   const bytes = await diff()
   core.setOutput('delta_bytes', bytes)
   core.endGroup()
