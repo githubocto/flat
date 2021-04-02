@@ -1,6 +1,7 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
 import { execSync } from 'child_process'
+import { join } from 'path'
 import fetchHTTP from './backends/http'
 import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
@@ -41,12 +42,25 @@ async function run(): Promise<void> {
   core.debug('*** pwd')
   core.debug(execSync('pwd').toString())
 
-  core.debug('*** ls')
-  core.debug(execSync('ls').toString())
+  // core.debug('*** ls')
+  // core.debug(execSync('ls').toString())
 
-  core.debug('*** ls ~/work/_actions/githubocto/flat/postprocessing/src')
+  // core.debug(
+  //   '*** ls ~/work/_actions/githubocto/flat/postprocessing/postprocess'
+  // )
+  // core.debug(
+  //   execSync(
+  //     'ls ~/work/_actions/githubocto/flat/postprocessing/postprocess'
+  //   ).toString()
+  // )
+
+  core.debug(`*** __filename: ${__filename}`)
+
   core.debug(
-    execSync('ls ~/work/_actions/githubocto/flat/postprocessing/src').toString()
+    `*** __filename/../postprocess/shim.ts: ${join(
+      __filename,
+      '../postprocess/shim.ts'
+    )}`
   )
 
   core.debug(`*** GITHUB_ACTION: ${process.env['GITHUB_ACTION']}`)
@@ -59,7 +73,9 @@ async function run(): Promise<void> {
       // /home/runner/work/_actions/githubocto/flat/postprocessing/
       // TODO: `Postprocessing` needs to be a branch identifier, how do we get this at runtime?
       filename = execSync(
-        `deno run -A ~/work/_actions/githubocto/flat/postprocessing/postprocess/postprocess_shim.ts ${config.postprocess} ${filename}`
+        `deno run -A ${join(__filename, '../postprocess/shim.ts')} ${
+          config.postprocess
+        } ${filename}`
       ).toString()
     } catch (error) {
       core.setFailed(error)
