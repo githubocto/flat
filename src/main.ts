@@ -40,9 +40,17 @@ async function run(): Promise<void> {
   if (config.postprocess) {
     core.startGroup('Postprocess')
     try {
-      const shim = join(__dirname, '../postprocess/shim.ts')
+      // Severe ridiculousness here
+      // ncc uses webpack to figure out what to bundle
+      // Slight variations on the arguments to join() can result in webpack
+      // thinking that it's a dynamic import of shim.ts, which will fail
+      // because it's actually a deno script. Webpack doesn't have a way
+      // to override the dynamic import detection:
+      //   https://github.com/webpack/webpack/issues/8826
+      // So, the following works, but it's finicky, beware, be warned.
+      const shim = '../postprocess/shim.ts'
       filename = execSync(
-        `deno run -A ${shim} ${config.postprocess} ${filename}`
+        `deno run -A ${join(__dirname, shim)} ${config.postprocess} ${filename}`
       ).toString()
     } catch (error) {
       core.setFailed(error)
