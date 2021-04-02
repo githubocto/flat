@@ -51,17 +51,17 @@ async function run(): Promise<void> {
       // to override the dynamic import detection:
       //   https://github.com/webpack/webpack/issues/8826
       // So, the following works, but it's finicky, beware, be warned.
-      const shim = '../postprocess/shim.ts'
-      const { output, newfilename } = JSON.parse(
-        execSync(
-          `deno run -q -A ${join(__dirname, shim)} ${
-            config.postprocess
-          } ${filename}`
-        ).toString()
-      )
-      core.debug(stdout)
-      filename = newfilename
-      core.debug(`Postprocessing filename returned: ${filename}`)
+      // const shim = '../postprocess/shim.ts'
+      const raw = execSync(
+        `deno run -q -A ${config.postprocess} ${filename}`
+      ).toString()
+
+      const lines = raw.trim().split('\n')
+      core.debug('*** raw')
+      core.debug(raw)
+      const newFilename = lines[lines.length - 1]
+      core.debug(`Postprocessing filename returned: ${newFilename}`)
+      filename = newFilename
     } catch (error) {
       core.setFailed(error)
     }
@@ -72,7 +72,8 @@ async function run(): Promise<void> {
   core.debug(execSync(`ls -la`).toString())
 
   core.startGroup('Calculating diffstat')
-  await exec('git', ['add', filename]) // TODO: should be filename instead of -A, but it fails otherwise
+  core.debug(`git adding ${filename}…`)
+  await exec('git', ['add', filename])
   const bytes = await diff()
   core.setOutput('delta_bytes', bytes)
   core.endGroup()
