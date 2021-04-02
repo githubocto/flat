@@ -37,6 +37,9 @@ async function run(): Promise<void> {
   }
   core.endGroup()
 
+  core.debug('info before postproc')
+  core.debug(execSync(`ls -la`).toString())
+
   if (config.postprocess) {
     core.startGroup('Postprocess')
     try {
@@ -50,13 +53,19 @@ async function run(): Promise<void> {
       // So, the following works, but it's finicky, beware, be warned.
       const shim = '../postprocess/shim.ts'
       filename = execSync(
-        `deno run -A ${join(__dirname, shim)} ${config.postprocess} ${filename}`
+        `deno run -q -A ${join(__dirname, shim)} ${
+          config.postprocess
+        } ${filename}`
       ).toString()
+      core.debug(`Postprocessing filename returned: ${filename}`)
     } catch (error) {
       core.setFailed(error)
     }
     core.endGroup()
   }
+
+  core.debug('info after postproc')
+  core.debug(execSync(`ls -la`).toString())
 
   core.startGroup('Calculating diffstat')
   await exec('git', ['add', '-A']) // TODO: should be filename instead of -A, but it fails otherwise
