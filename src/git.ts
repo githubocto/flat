@@ -71,7 +71,7 @@ export async function diff(filename: string): Promise<number> {
   )
   const status = statuses.find(s => s.path === filename)
   if (typeof status === 'undefined') {
-    throw new Error(`Did not find a git status for "${filename}"`)
+    return 0 // there's no change to the specified file
   }
   return await diffSize(status)
 }

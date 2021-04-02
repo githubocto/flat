@@ -48,7 +48,6 @@ async function run(): Promise<void> {
       const lines = raw.trim().split('\n')
       const newFilename = lines[lines.length - 1]
       core.debug(`Postprocess returned filename: "${newFilename}"`)
-
       filename = newFilename
     } catch (error) {
       core.setFailed(error)
