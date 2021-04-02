@@ -159,7 +159,7 @@ Deno's import-by-url model makes it easy to author lightweight scripts that can 
 
 The postprocessing script is invoked with `deno run -q -A {your script} {your fetched data file}`. Note that the `-A` grants your script full permissions to access network, disk — everything! Make sure you trust any dependencies you pull in, as they aren't restricted. We will likely revisit this in the future with another setting that specifies which permissions to grant deno.
 
-### How do I **\_\_**?
+### How do I do ...?
 
 We're putting together a collection of helpers at [deno.land/x/flat](https://deno.land/x/flat)
 
