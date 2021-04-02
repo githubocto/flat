@@ -37,45 +37,12 @@ async function run(): Promise<void> {
   }
   core.endGroup()
 
-  core.debug(`*** postprocess is: ${config.postprocess}`)
-
-  core.debug('*** pwd')
-  core.debug(execSync('pwd').toString())
-
-  // core.debug('*** ls')
-  // core.debug(execSync('ls').toString())
-
-  // core.debug(
-  //   '*** ls ~/work/_actions/githubocto/flat/postprocessing/postprocess'
-  // )
-  // core.debug(
-  //   execSync(
-  //     'ls ~/work/_actions/githubocto/flat/postprocessing/postprocess'
-  //   ).toString()
-  // )
-
-  core.debug(`*** __dirname: ${__dirname}`)
-
-  core.debug(
-    `*** __dirname/../postprocess/shim.ts: ${join(
-      __dirname,
-      '../postprocess/shim.ts'
-    )}`
-  )
-
-  core.debug(`*** GITHUB_ACTION: ${process.env['GITHUB_ACTION']}`)
-
   if (config.postprocess) {
     core.startGroup('Postprocess')
     try {
-      // TODO: where is the shim at runtime?
-      // ~/work/_actions/githubocto/flat/postprocessing/
-      // /home/runner/work/_actions/githubocto/flat/postprocessing/
-      // TODO: `Postprocessing` needs to be a branch identifier, how do we get this at runtime?
+      const shim = join(__dirname, '../postprocess/shim.ts')
       filename = execSync(
-        `deno run -A ${join(__dirname, '../postprocess/shim.ts')} ${
-          config.postprocess
-        } ${filename}`
+        `deno run -A ${shim} ${config.postprocess} ${filename}`
       ).toString()
     } catch (error) {
       core.setFailed(error)
