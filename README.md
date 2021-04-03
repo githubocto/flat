@@ -127,7 +127,41 @@ The name of the file containing the SQL query that will be issued to the databas
 
 A signed number describing the number of bytes that changed in this run. If the new data is smaller than the existing, committed data, this will be a negative number.
 
----
+## Postprocessing
+
+### `postprocess`
+
+This is the path to a [deno](https://deno.land) script that will be invoked to postprocess your data after it is fetched. The script will be invoked with the path to the file that was fetched, and it **must** output, as its last line of output,
+the name of the file to use after postprocessing. Here's a simple postprocessing example:
+
+```ts
+import { readJSON, writeJSON } from 'https://deno.land/x/flat/mod.ts'
+
+// The filename is the first invocation argument
+const filename = Deno.args[0]
+const data = await readJSON(filename)
+
+// Pluck a specific key off
+// and write it out to a different file
+// Careful! any uncaught errors and the workflow will fail, committing nothing.
+const newfile = `subset_of_${filename}`
+await writeJSON(newfile, data.path.to.something)
+console.log(newfile)
+```
+
+You can write to `stdout` or use `console.log()` as much as you like within your postprocessing script; the results should show up in your actions log. The only hard requirement is that the last line must contain the path to the processed file, and nothing else.
+
+### Why deno?
+
+Deno's import-by-url model makes it easy to author lightweight scripts that can include dependencies without forcing you to set up a bundler.
+
+### How is my script invoked?
+
+The postprocessing script is invoked with `deno run -q -A {your script} {your fetched data file}`. Note that the `-A` grants your script full permissions to access network, disk — everything! Make sure you trust any dependencies you pull in, as they aren't restricted. We will likely revisit this in the future with another setting that specifies which permissions to grant deno.
+
+### How do I do ...?
+
+We're putting together a collection of helpers at [deno.land/x/flat](https://deno.land/x/flat)
 
 # Contributing
 

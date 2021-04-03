@@ -64,12 +64,14 @@ async function diffSize(file: GitStatus): Promise<number> {
   }
 }
 
-export async function diff(): Promise<number> {
+export async function diff(filename: string): Promise<number> {
   const statuses = await gitStatus()
   core.debug(
     `Parsed statuses: ${statuses.map(s => JSON.stringify(s)).join(', ')}`
   )
-  statuses.forEach(s => core.debug(`${s.flag} ${s.path}`))
-  const sizes = await Promise.all(statuses.map(diffSize))
-  return sizes.reduce((acc, cur) => acc + cur)
+  const status = statuses.find(s => s.path === filename)
+  if (typeof status === 'undefined') {
+    return 0 // there's no change to the specified file
+  }
+  return await diffSize(status)
 }

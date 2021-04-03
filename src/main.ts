@@ -1,5 +1,6 @@
 import * as core from '@actions/core'
 import { exec } from '@actions/exec'
+import { execSync } from 'child_process'
 import fetchHTTP from './backends/http'
 import fetchSQL from './backends/sql'
 import { getConfig, isHTTPConfig, isSQLConfig } from './config'
@@ -35,9 +36,28 @@ async function run(): Promise<void> {
   }
   core.endGroup()
 
+  if (config.postprocess) {
+    core.startGroup('Postprocess')
+    core.debug(`Invoking ${config.postprocess} with ${filename}...`)
+    try {
+      const raw = execSync(
+        `deno run -q -A ${config.postprocess} ${filename}`
+      ).toString()
+
+      const lines = raw.trim().split('\n')
+      const newFilename = lines[lines.length - 1]
+      core.debug(`Postprocess returned filename: "${newFilename}"`)
+      filename = newFilename
+    } catch (error) {
+      core.setFailed(error)
+    }
+    core.endGroup()
+  }
+
   core.startGroup('Calculating diffstat')
-  await exec('git', ['add', '-A'])
-  const bytes = await diff()
+  core.debug(`git adding ${filename}…`)
+  await exec('git', ['add', filename])
+  const bytes = await diff(filename)
   core.setOutput('delta_bytes', bytes)
   core.endGroup()
 

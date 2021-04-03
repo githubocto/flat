@@ -18,6 +18,9 @@ inputs:
     description: 'A SQL query to execute for fetching data.'
     required: false
     default: 'query.sql'
+  postprocess:
+    description: 'A path or URL to a deno postprocessing script.'
+    required: false
 outputs:
   delta_bytes: # size of changed data
     description: The overall number of bytes changed in the output data this run (current size - previous size)
