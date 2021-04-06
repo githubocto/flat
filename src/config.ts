@@ -26,7 +26,15 @@ const SQLConfigSchema = z
   .merge(CommonConfigSchema)
 export type SQLConfig = z.infer<typeof SQLConfigSchema>
 
-const ConfigSchema = z.union([HTTPConfigSchema, SQLConfigSchema])
+const PurviewConfigSchema = z
+  .object({
+    purview_endpoint: z.string(),
+    purview_term_id: z.string(),
+  })
+  .merge(CommonConfigSchema)
+export type PurviewConfig = z.infer<typeof PurviewConfigSchema>
+
+const ConfigSchema = z.union([HTTPConfigSchema, SQLConfigSchema, PurviewConfigSchema])
 export type Config = z.infer<typeof ConfigSchema>
 
 export function getConfig(): Config {
@@ -37,6 +45,8 @@ export function getConfig(): Config {
     'sql_format',
     'sql_connstring',
     'sql_queryfile',
+    'purview_endpoint',
+    'purview_term_id',
     'postprocess',
   ]
   keys.forEach(k => {
@@ -51,15 +61,16 @@ export function getConfig(): Config {
       return HTTPConfigSchema.parse(raw)
     } else if ('sql_connstring' in raw) {
       return SQLConfigSchema.parse(raw)
+    } else if ('purview_endpoint' in raw) {
+      return PurviewConfigSchema.parse(raw)
     } else {
       throw new Error(
-        'One of `http_url` or `sql_connstring` inputs are required.'
+        'One of `http_url` or `sql_connstring` or `purview_endpoint` inputs are required.'
       )
     }
   } catch (error) {
     throw new Error(
-      `Invalid configuration!\nReceived: ${JSON.stringify(raw)}\nFailure:${
-        error.message
+      `Invalid configuration!\nReceived: ${JSON.stringify(raw)}\nFailure:${error.message
       }`
     )
   }
@@ -71,4 +82,8 @@ export function isHTTPConfig(config: Config): config is HTTPConfig {
 
 export function isSQLConfig(config: Config): config is SQLConfig {
   return 'sql_connstring' in config && 'sql_queryfile' in config
+}
+
+export function isPurviewConfig(config: Config): config is PurviewConfig {
+  return 'purview_endpoint' in config
 }
