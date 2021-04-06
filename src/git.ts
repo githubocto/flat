@@ -47,14 +47,21 @@ async function getHeadSize(path: string): Promise<number | undefined> {
 
 async function diffSize(file: GitStatus): Promise<number> {
   const stat = statSync(file.path)
+  core.debug(
+    `Calculating diff for ${JSON.stringify(file)}, with size ${stat.size}b`
+  )
   switch (file.flag) {
     case 'M':
       // get old size and compare
       const oldSize = await getHeadSize(file.path)
-      core.debug(`oldsize: ${oldSize}`)
-      return oldSize === undefined ? stat.size : stat.size - oldSize
+      const delta = oldSize === undefined ? stat.size : stat.size - oldSize
+      core.debug(
+        ` ==> ${file.path} modified: old ${oldSize}, new ${stat.size}, delta ${delta}b `
+      )
+      return delta
 
     case 'A':
+      core.debug(` ==> ${file.path} added: delta ${stat.size}b`)
       return stat.size
 
     default:
@@ -71,6 +78,7 @@ export async function diff(filename: string): Promise<number> {
   )
   const status = statuses.find(s => s.path === filename)
   if (typeof status === 'undefined') {
+    core.info(`No status found for ${filename}, aborting.`)
     return 0 // there's no change to the specified file
   }
   return await diffSize(status)
