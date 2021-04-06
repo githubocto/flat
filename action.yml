@@ -21,6 +21,21 @@ inputs:
   postprocess:
     description: 'A path (relative to the root of your repo) or a URL to a deno postprocessing script.'
     required: false
+  purview_endpoint:
+    description: 'An endpoint for a Purview instance'
+    required: false
+  purview_term_id:
+    description: 'GUID of a tag to query in Purview.'
+    required: false
+  azure_tenant_id:
+    description: 'An Azure tenant ID'
+    required: false
+  azure_client_id:
+    description: 'An Azure client ID'
+    required: false
+  azure_client_secret:
+    description: 'An Azure client secret'
+    required: false
 outputs:
   delta_bytes: # size of changed data
     description: The overall number of bytes changed in the output data this run (current size - previous size)

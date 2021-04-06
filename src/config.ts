@@ -30,6 +30,9 @@ const PurviewConfigSchema = z
   .object({
     purview_endpoint: z.string(),
     purview_term_id: z.string(),
+    azure_tenant_id: z.string(),
+    azure_client_id: z.string(),
+    azure_client_secret: z.string(),
   })
   .merge(CommonConfigSchema)
 export type PurviewConfig = z.infer<typeof PurviewConfigSchema>
@@ -47,6 +50,9 @@ export function getConfig(): Config {
     'sql_queryfile',
     'purview_endpoint',
     'purview_term_id',
+    'azure_tenant_id',
+    'azure_client_id',
+    'azure_client_secret',
     'postprocess',
   ]
   keys.forEach(k => {
