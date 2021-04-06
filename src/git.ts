@@ -1,5 +1,6 @@
 import { exec, ExecOptions } from '@actions/exec'
 import { statSync } from 'fs'
+import path from 'path'
 import * as core from '@actions/core'
 
 export type GitStatus = {
@@ -76,7 +77,7 @@ export async function diff(filename: string): Promise<number> {
   core.debug(
     `Parsed statuses: ${statuses.map(s => JSON.stringify(s)).join(', ')}`
   )
-  const status = statuses.find(s => s.path === filename)
+  const status = statuses.find(s => path.relative(s.path, filename) === '')
   if (typeof status === 'undefined') {
     core.info(`No status found for ${filename}, aborting.`)
     return 0 // there's no change to the specified file
