@@ -29,7 +29,7 @@ async function run(): Promise<void> {
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
   } else if (isPurviewConfig(config)) {
-    const abcd = await fetchPurview(config)
+    filename = await fetchPurview(config)
   } else {
     // typescript should preclude us from ever being here
     // because config is HTTPConfig | SQLConfig
