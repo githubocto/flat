@@ -119,7 +119,7 @@ One of `csv` or `json`. SQL query results will be serialized to disk in the spec
 
 ### `sql_queryfile`
 
-The name of the file containing the SQL query that will be issued to the database. Defaults to `query.sql`, which must be placed in `.github/workflows` alongside the `workflow.yml`.
+The pathname of the file containing the SQL query that will be issued to the database. Defaults to `.github/workflows/query.sql`. This path is relative to the root of your repo.
 
 ## Outputs
 
@@ -131,8 +131,9 @@ A signed number describing the number of bytes that changed in this run. If the 
 
 ### `postprocess`
 
-This is the path to a [deno](https://deno.land) script that will be invoked to postprocess your data after it is fetched. The script will be invoked with the path to the file that was fetched, and it **must** output, as its last line of output,
-the name of the file to use after postprocessing. Here's a simple postprocessing example:
+This is the path to a [deno](https://deno.land) script that will be invoked to postprocess your data after it is fetched. This path is relative to the root of your repo.
+
+The script will be invoked with the path to the file that was fetched, and it **must** output, as its last line of output, the name of the file to use after postprocessing. Here's a simple postprocessing example:
 
 ```ts
 import { readJSON, writeJSON } from 'https://deno.land/x/flat/mod.ts'

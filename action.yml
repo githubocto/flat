@@ -15,11 +15,11 @@ inputs:
     description: 'A connection string for making a SQL query.'
     required: false
   sql_queryfile:
-    description: 'A SQL query to execute for fetching data.'
+    description: 'A path (relative to the root of your repo) of a SQL query file to execute for fetching data.'
     required: false
-    default: 'query.sql'
+    default: '.github/workflows/query.sql'
   postprocess:
-    description: 'A path or URL to a deno postprocessing script.'
+    description: 'A path (relative to the root of your repo) or a URL to a deno postprocessing script.'
     required: false
 outputs:
   delta_bytes: # size of changed data
