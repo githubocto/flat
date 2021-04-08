@@ -41,7 +41,7 @@ async function run(): Promise<void> {
     core.debug(`Invoking ${config.postprocess} with ${filename}...`)
     try {
       const raw = execSync(
-        `deno run -q -A ${config.postprocess} ${filename}`
+        `deno run -q -A --unstable ${config.postprocess} ${filename}`
       ).toString()
 
       const lines = raw.trim().split('\n')
