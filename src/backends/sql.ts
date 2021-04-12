@@ -83,6 +83,14 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
     throw error
   }
 
+  core.info('Closing database')
+  try {
+    await connection.close();
+  } catch (error) {
+    core.setFailed(`Unable to close database: ${error.message}`)
+    throw error
+  }
+
   const outfile = `${config.outfile_basename}.${config.sql_format}`
   try {
     switch (config.sql_format) {
