@@ -27,6 +27,7 @@ outputs:
 runs:
   using: 'node12'
   main: 'dist/index.js'
+  post: 'dist/post/index.js'
 branding:
   color: 'purple'
   icon: 'download-cloud'

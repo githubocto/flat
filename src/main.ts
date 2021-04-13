@@ -61,25 +61,15 @@ async function run(): Promise<void> {
   core.setOutput('delta_bytes', bytes)
   core.endGroup()
 
-  if (bytes === 0) {
-    return
-  }
-
   core.startGroup('Committing new data')
-  const sign = bytes >= 0 ? '+' : ''
-  const date = new Date().toISOString()
-  const msg = `Latest data: ${date} (${sign}${bytes}b)`
-  const meta = JSON.stringify(
-    {
-      files: [{ name: filename, deltaBytes: bytes, date, source }],
-    },
-    undefined,
-    2
-  )
-  core.info(`Committing "${msg}"`)
-  core.debug(meta)
-  await exec('git', ['commit', '-m', msg + '\n' + meta])
-  await exec('git', ['push'])
+
+  const alreadyEditedFiles = JSON.parse(process.env.FILES || "[]")
+  core.info("alreadyEditedFiles")
+  core.info(JSON.stringify(alreadyEditedFiles))
+  
+  const newFiles = [{ name: filename, deltaBytes: bytes, source }] // TODO: add other files
+  const files = [...alreadyEditedFiles, ...newFiles]
+  core.exportVariable('FILES', files);
   core.endGroup()
 }
 
