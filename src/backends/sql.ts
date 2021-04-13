@@ -91,9 +91,10 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
     throw error
   }
 
-  const outfile = `${config.outfile_basename}.${config.sql_format}`
+  const outfile = `${config.downloaded_filename}`
+  const sqlFormat = outfile.split('.').pop() // should be csv or json
   try {
-    switch (config.sql_format) {
+    switch (sqlFormat) {
       case 'csv':
         core.info('Writing CSV')
         const writer = createWriteStream(outfile, { encoding: 'utf8' })

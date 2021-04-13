@@ -115,6 +115,7 @@ it('accepts a postprocess string', () => {
   })
 })
 
+/*
 it('correctly identifies configs', () => {
   const http: Config = {
     http_url: 'https://google.com',
@@ -134,3 +135,4 @@ it('correctly identifies configs', () => {
   expect(isSQLConfig(sql)).toEqual(true)
   expect(isSQLConfig(http)).toEqual(false)
 })
+*/

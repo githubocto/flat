@@ -29,6 +29,7 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const exec_1 = __nccwpck_require__(514);
+core.debug("Start post job debug");
 core.info("Start post job");
 const run = async () => {
     if (process.env.HAS_RUN_POST_JOB)

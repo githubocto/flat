@@ -5,7 +5,7 @@ const FormatEnum = z.enum(['csv', 'json'])
 export type FormatEnum = z.infer<typeof FormatEnum>
 
 const CommonConfigSchema = z.object({
-  outfile_basename: z.string(),
+  downloaded_filename: z.string(),
   postprocess: z.string().optional(),
 })
 export type CommonConfig = z.infer<typeof CommonConfigSchema>
@@ -21,7 +21,6 @@ const SQLConfigSchema = z
   .object({
     sql_connstring: z.string(),
     sql_queryfile: z.string(),
-    sql_format: FormatEnum,
   })
   .merge(CommonConfigSchema)
 export type SQLConfig = z.infer<typeof SQLConfigSchema>
@@ -32,9 +31,8 @@ export type Config = z.infer<typeof ConfigSchema>
 export function getConfig(): Config {
   const raw: { [k: string]: string } = {}
   const keys = [
-    'outfile_basename',
+    'downloaded_filename',
     'http_url',
-    'sql_format',
     'sql_connstring',
     'sql_queryfile',
     'postprocess',

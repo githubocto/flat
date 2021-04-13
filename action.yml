@@ -2,15 +2,12 @@ name: 'Flat Data'
 description: 'The GitHub action which powers data fetching for Flat'
 author: 'GitHub OCTO'
 inputs:
-  outfile_basename:
-    description: '(Optional) The base filename to use for writing data, excluding the filename extension. An extension will be automatically chosen based on the response type.'
-    default: 'data'
+  downloaded_filename:
+    description: 'The filename to use for writing data.'
+    required: false
   http_url:
     description: 'A URL containing data to fetch.'
     required: false
-  sql_format:
-    description: "(Optional) The format of data to output. One of 'csv' or 'json'"
-    default: 'json'
   sql_connstring:
     description: 'A connection string for making a SQL query.'
     required: false
