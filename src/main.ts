@@ -63,13 +63,25 @@ async function run(): Promise<void> {
 
   core.startGroup('Committing new data')
 
-  const alreadyEditedFiles = JSON.parse(process.env.FILES || "[]")
-  core.info("alreadyEditedFiles")
+  const alreadyEditedFiles = JSON.parse(process.env.FILES || '[]')
+  core.info('alreadyEditedFiles')
   core.info(JSON.stringify(alreadyEditedFiles))
-  
+
   const newFiles = [{ name: filename, deltaBytes: bytes, source }] // TODO: add other files
+
+  const newUnstagedFiles = await exec('git', [
+    'ls-files',
+    '--others',
+    '--exclude-standard',
+  ])
+  const modifiedUnstagedFiles = await exec('git', ['ls-files', '-m'])
+  core.info('newUnstagedFiles')
+  core.info(newUnstagedFiles + '')
+  core.info('modifiedUnstagedFiles')
+  core.info(modifiedUnstagedFiles + '')
+
   const files = [...alreadyEditedFiles, ...newFiles]
-  core.exportVariable('FILES', files);
+  core.exportVariable('FILES', files)
   core.endGroup()
 }
 
