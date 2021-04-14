@@ -61,9 +61,10 @@ async function run(): Promise<void> {
   ).toString()
   const modifiedUnstagedFiles = await execSync('git ls-files -m').toString()
   const editedFilenames = [
-    newUnstagedFiles.split('\n'),
-    modifiedUnstagedFiles.split('\n'),
+    ...newUnstagedFiles.split('\n'),
+    ...modifiedUnstagedFiles.split('\n'),
   ].filter(Boolean)
+
   core.info('newUnstagedFiles')
   core.info(newUnstagedFiles + '')
   core.info('modifiedUnstagedFiles')
@@ -74,10 +75,15 @@ async function run(): Promise<void> {
   core.endGroup()
 
   core.startGroup('Calculating diffstat')
-  core.debug(`git adding ${filename}…`)
-  await exec('git', ['add', filename])
-  const bytes = await diff(filename)
-  core.setOutput('delta_bytes', bytes)
+
+  const editedFiles = []
+  for (const filename of editedFilenames) {
+    core.debug(`git adding ${filename}…`)
+    await exec('git', ['add', filename])
+    const bytes = await diff(filename)
+    // core.setOutput('delta_bytes', bytes)
+    editedFiles.push({ name: filename, deltaBytes: bytes, source })
+  }
   core.endGroup()
 
   core.startGroup('Committing new data')
@@ -86,8 +92,10 @@ async function run(): Promise<void> {
   core.info('alreadyEditedFiles')
   core.info(JSON.stringify(alreadyEditedFiles))
 
-  const newFiles = [{ name: filename, deltaBytes: bytes, source }] // TODO: add other files
-  const files = [...alreadyEditedFiles, ...newFiles]
+  core.info('editedFiles')
+  core.info(JSON.stringify(editedFiles))
+
+  const files = [...alreadyEditedFiles, ...editedFiles]
   core.exportVariable('FILES', files)
   core.endGroup()
 }
