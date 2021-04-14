@@ -60,11 +60,16 @@ async function run(): Promise<void> {
     'git ls-files --others --exclude-standard'
   ).toString()
   const modifiedUnstagedFiles = await execSync('git ls-files -m').toString()
+  const editedFilenames = [
+    newUnstagedFiles.split('\n'),
+    modifiedUnstagedFiles.split('\n'),
+  ].filter(Boolean)
   core.info('newUnstagedFiles')
   core.info(newUnstagedFiles + '')
   core.info('modifiedUnstagedFiles')
   core.info(modifiedUnstagedFiles + '')
-  core.info(typeof modifiedUnstagedFiles)
+  core.info('editedFilenames')
+  core.info(JSON.stringify(editedFilenames))
 
   core.endGroup()
 
