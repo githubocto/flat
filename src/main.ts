@@ -56,12 +56,10 @@ async function run(): Promise<void> {
 
   core.startGroup('Getting changed files')
 
-  const newUnstagedFiles = await exec('git', [
-    'ls-files',
-    '--others',
-    '--exclude-standard',
-  ])
-  const modifiedUnstagedFiles = await exec('git', ['ls-files', '-m'])
+  const newUnstagedFiles = await execSync(
+    'git ls-files --others --exclude-standard'
+  ).toString()
+  const modifiedUnstagedFiles = await execSync('git ls-files -m').toString()
   core.info('newUnstagedFiles')
   core.info(newUnstagedFiles + '')
   core.info('modifiedUnstagedFiles')
