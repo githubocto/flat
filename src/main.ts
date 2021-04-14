@@ -54,6 +54,22 @@ async function run(): Promise<void> {
     core.endGroup()
   }
 
+  core.startGroup('Getting changed files')
+
+  const newUnstagedFiles = await exec('git', [
+    'ls-files',
+    '--others',
+    '--exclude-standard',
+  ])
+  const modifiedUnstagedFiles = await exec('git', ['ls-files', '-m'])
+  core.info('newUnstagedFiles')
+  core.info(newUnstagedFiles + '')
+  core.info('modifiedUnstagedFiles')
+  core.info(modifiedUnstagedFiles + '')
+  core.info(typeof modifiedUnstagedFiles)
+
+  core.endGroup()
+
   core.startGroup('Calculating diffstat')
   core.debug(`git adding ${filename}…`)
   await exec('git', ['add', filename])
@@ -68,18 +84,6 @@ async function run(): Promise<void> {
   core.info(JSON.stringify(alreadyEditedFiles))
 
   const newFiles = [{ name: filename, deltaBytes: bytes, source }] // TODO: add other files
-
-  const newUnstagedFiles = await exec('git', [
-    'ls-files',
-    '--others',
-    '--exclude-standard',
-  ])
-  const modifiedUnstagedFiles = await exec('git', ['ls-files', '-m'])
-  core.info('newUnstagedFiles')
-  core.info(newUnstagedFiles + '')
-  core.info('modifiedUnstagedFiles')
-  core.info(modifiedUnstagedFiles + '')
-
   const files = [...alreadyEditedFiles, ...newFiles]
   core.exportVariable('FILES', files)
   core.endGroup()
