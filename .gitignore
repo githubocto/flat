@@ -75,3 +75,7 @@ typings/
 .env.test
 
 lib
+.DS_Store
+
+#husky
+.husky/.gitignore
