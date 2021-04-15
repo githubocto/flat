@@ -44,10 +44,13 @@ async function run(): Promise<void> {
         `deno run -q -A --unstable ${config.postprocess} ${filename}`
       ).toString()
 
-      const lines = raw.trim().split('\n')
-      const newFilename = lines[lines.length - 1]
-      core.debug(`Postprocess returned filename: "${newFilename}"`)
-      filename = newFilename
+      core.info("Log Deno output")
+      core.info(raw)
+
+      // const lines = raw.trim().split('\n')
+      // const newFilename = lines[lines.length - 1]
+      // core.debug(`Postprocess returned filename: "${newFilename}"`)
+      // filename = newFilename
     } catch (error) {
       core.setFailed(error)
     }
@@ -86,7 +89,7 @@ async function run(): Promise<void> {
   }
   core.endGroup()
 
-  core.startGroup('Committing new data')
+  // core.startGroup('Committing new data')
 
   const alreadyEditedFiles = JSON.parse(process.env.FILES || '[]')
   core.info('alreadyEditedFiles')
