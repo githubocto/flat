@@ -44,7 +44,7 @@ async function run(): Promise<void> {
         `deno run -q -A --unstable ${config.postprocess} ${filename}`
       ).toString()
 
-      core.info("Log Deno output")
+      core.info("Log deno output")
       core.info(raw)
 
       // const lines = raw.trim().split('\n')
