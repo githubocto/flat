@@ -85,7 +85,7 @@ async function run(): Promise<void> {
   }
   core.endGroup()
 
-  // core.startGroup('Committing new data')
+  core.startGroup('Committing new data')
 
   const alreadyEditedFiles = JSON.parse(process.env.FILES || '[]')
   core.info('alreadyEditedFiles')
@@ -96,6 +96,7 @@ async function run(): Promise<void> {
 
   const files = [...alreadyEditedFiles, ...editedFiles]
   core.exportVariable('FILES', files)
+  
   core.endGroup()
 }
 
