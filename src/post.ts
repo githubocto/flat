@@ -10,7 +10,7 @@ const run = async () => {
     return
   }
 
-  const files = JSON.parse(process.env.FILES || "[]")
+  const files = JSON.parse(process.env.FILES || '[]')
 
   const date = new Date().toISOString()
   const meta = JSON.stringify(
@@ -23,13 +23,16 @@ const run = async () => {
   )
   const msg = `Flat: latest data (${date})`
 
+  // Don't want to commit if there aren't any files changed!
+  if (!files.length) return
+
   // these should already be staged, in main.ts
   core.info(`Committing "${msg}"`)
   core.debug(meta)
   await exec('git', ['commit', '-m', msg + '\n' + meta])
   await exec('git', ['push'])
   core.info(`Pushed!`)
-  core.exportVariable('HAS_RUN_POST_JOB', "true");
+  core.exportVariable('HAS_RUN_POST_JOB', 'true')
 
   core.endGroup()
 }
