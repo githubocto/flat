@@ -1,6 +1,6 @@
 {
   "name": "flat",
-  "version": "2.0.0",
+  "version": "2.0.1",
   "description": "The GitHub action which powers data fetching for Flat",
   "main": "index.js",
   "scripts": {

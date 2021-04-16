@@ -29,13 +29,14 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core = __importStar(__nccwpck_require__(186));
 const exec_1 = __nccwpck_require__(514);
-core.debug("Start post job debug");
-core.info("Start post job");
 const run = async () => {
-    if (process.env.HAS_RUN_POST_JOB)
+    core.startGroup('Post cleanup script');
+    if (process.env.HAS_RUN_POST_JOB) {
+        core.info('Files already committed');
+        core.endGroup();
         return;
+    }
     const files = JSON.parse(process.env.FILES || "[]");
-    core.info("Running post-job script");
     const date = new Date().toISOString();
     const meta = JSON.stringify({
         date,
@@ -49,6 +50,7 @@ const run = async () => {
     await exec_1.exec('git', ['push']);
     core.info(`Pushed!`);
     core.exportVariable('HAS_RUN_POST_JOB', "true");
+    core.endGroup();
 };
 run().catch(error => {
     core.setFailed('Post script failed! ' + error.message);

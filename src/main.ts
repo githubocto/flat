@@ -44,20 +44,16 @@ async function run(): Promise<void> {
         `deno run -q -A --unstable ${config.postprocess} ${filename}`
       ).toString()
 
-      core.info("Log deno output")
+      core.info("Deno output:")
       core.info(raw)
 
-      // const lines = raw.trim().split('\n')
-      // const newFilename = lines[lines.length - 1]
-      // core.debug(`Postprocess returned filename: "${newFilename}"`)
-      // filename = newFilename
     } catch (error) {
       core.setFailed(error)
     }
     core.endGroup()
   }
 
-  core.startGroup('Getting changed files')
+  core.startGroup('File changes')
 
   const newUnstagedFiles = await execSync(
     'git ls-files --others --exclude-standard'
