@@ -2,4 +2,4 @@
 . "$(dirname "$0")/_/husky.sh"
 
 npm run dist
-git add dist/*.js dist/post/*
+git add dist/*
