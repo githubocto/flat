@@ -62,12 +62,20 @@ jobs:
   scheduled:
     runs-on: ubuntu-latest
     steps:
+      # This step installs Deno, which is a new Javascript runtime that improves on Node. Can be used for an optional postprocessing step
+      - name: Setup deno
+        uses: denoland/setup-deno@main
+        with:
+          deno-version: v1.x
+      # Check out the repository so it can read the files inside of it and do other operations
       - name: Check out repo
         uses: actions/checkout@v2
+      # The Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
       - name: Fetch data
         uses: githubocto/flat@v1
         with:
           http_url: # THE URL YOU WISH TO FETCH GOES HERE
+          downloaded_filename: # The http_url gets saved and renamed in our repository. Example: data.json, data.csv, image.png
 ```
 
 Note that the `schedule` parameter affects the overall workflow, which may contain other jobs and steps beyond Flat.
