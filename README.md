@@ -91,21 +91,27 @@ The action currently has two fetching modes:
 
 These two modes are exclusive; you cannot mix settings for these two in one Flat step for a workflow job.
 
-### `outfile_basename`
+### HTTP Mode
 
-This value is used as the basis for the file created to store data fetched by Flat. An extension is appended to this value at runtime to determine the actual filename. The behavior depends on Flat's fetching mode:
+#### `http_url`
 
-- `http`
-  1. If the response headers contain a `content-disposition` header, determine an extension from that.
-  2. Otherwise, attempt to infer an extension based on a `content-type` header, if available.
-  3. Give up and use `outfile_basename` as the entire filename, without an extension.
-- `sql`: the extension is determined on the basis of the `sql_format` input.
+A URL from which to fetch data. Specifying this input puts Flat into `http` mode. 
 
-### `http_url`
+This can be any endpoint: a json, csv, png, zip, xlsx, etc.
 
-A URL from which to fetch data. Specifying this input puts Flat into `http` mode.
+#### `downloaded_filename`
 
-### `sql_connstring`
+The name of the file to store data fetched by Flat. 
+
+In `http` mode this can be anything. This can be any endpoint: a json, csv, txt, png, zip, xlsx, etc. file
+
+#### `postprocess` (optional)
+
+A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the "Postprocessing section".
+
+### SQL Mode
+
+#### `sql_connstring`
 
 A URI-style database connection string. Flat will use this connection string to connect to the database and issue the query.
 
@@ -119,15 +125,22 @@ A URI-style database connection string. Flat will use this connection string to 
 >
 > If you're using the [flat-vscode extension](https://github.com/githubocto/flat-vscode), this is handled for you.
 
-### `sql_format`
 
-One of `csv` or `json`. SQL query results will be serialized to disk in the specified format. Defaults to `json`.
+#### `sql_queryfile`
+
+The pathname of the file containing the SQL query that will be issued to the database. Defaults to `.github/workflows/query.sql`. This path is relative to the root of your repo.
+
+#### `downloaded_filename`
+
+The name of the file to store data fetched by Flat. 
+
+In `sql` mode this should be one of `csv` or `json`. SQL query results will be serialized to disk in the specified format.
 
 > ⚠️ While the JSON is not pretty-printed, CSV is often a more efficient serialization for tabular data.
 
-### `sql_queryfile`
+#### `postprocess` (optional)
 
-The pathname of the file containing the SQL query that will be issued to the database. Defaults to `.github/workflows/query.sql`. This path is relative to the root of your repo.
+A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the "Postprocessing section".
 
 ## Outputs
 
@@ -137,17 +150,15 @@ A signed number describing the number of bytes that changed in this run. If the 
 
 ## Postprocessing
 
-### `postprocess`
+You can add a `postprocess` input in the Action which is path to a [deno](https://deno.land) Javascript or Typescript script that will be invoked to postprocess your data after it is fetched. This path is relative to the root of your repo.
 
-This is the path to a [deno](https://deno.land) script that will be invoked to postprocess your data after it is fetched. This path is relative to the root of your repo.
-
-The script will be invoked with the path to the file that was fetched, and it **must** output, as its last line of output, the name of the file to use after postprocessing. Here's a simple postprocessing example:
+The script can use either `Deno.args[0]` or the name of the `downloaded_filename` to access the file fetched by Flat Data. 
 
 ```ts
 import { readJSON, writeJSON } from 'https://deno.land/x/flat/mod.ts'
 
 // The filename is the first invocation argument
-const filename = Deno.args[0]
+const filename = Deno.args[0] // Same name as downloaded_filename
 const data = await readJSON(filename)
 
 // Pluck a specific key off
@@ -155,10 +166,9 @@ const data = await readJSON(filename)
 // Careful! any uncaught errors and the workflow will fail, committing nothing.
 const newfile = `subset_of_${filename}`
 await writeJSON(newfile, data.path.to.something)
-console.log(newfile)
 ```
 
-You can write to `stdout` or use `console.log()` as much as you like within your postprocessing script; the results should show up in your actions log. The only hard requirement is that the last line must contain the path to the processed file, and nothing else.
+You can use `console.log()` as much as you like within your postprocessing script; the results should show up in your actions log.
 
 ### Why deno?
 
@@ -166,11 +176,12 @@ Deno's import-by-url model makes it easy to author lightweight scripts that can 
 
 ### How is my script invoked?
 
-The postprocessing script is invoked with `deno run -q -A {your script} {your fetched data file}`. Note that the `-A` grants your script full permissions to access network, disk — everything! Make sure you trust any dependencies you pull in, as they aren't restricted. We will likely revisit this in the future with another setting that specifies which permissions to grant deno.
+The postprocessing script is invoked with `deno run -q -A --unstable {your script} {your fetched data file}`. Note that the `-A` grants your script full permissions to access network, disk — everything! Make sure you trust any dependencies you pull in, as they aren't restricted. We will likely revisit this in the future with another setting that specifies which permissions to grant deno.
 
 ### How do I do ...?
 
-We're putting together a collection of helpers at [deno.land/x/flat](https://deno.land/x/flat)
+The learn more about the possibilities for postprocessing check out our [helper and examples postprocessing repo](https://github.com/githubocto/flat-postprocessing).
+
 
 # Contributing
 
