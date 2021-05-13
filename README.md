@@ -107,7 +107,7 @@ In `http` mode this can be anything. This can be any endpoint: a json, csv, txt,
 
 #### `postprocess` (optional)
 
-A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the "Postprocessing section".
+A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the ["Postprocessing section"](https://github.com/githubocto/flat#postprocessing).
 
 ### SQL Mode
 
@@ -140,7 +140,7 @@ In `sql` mode this should be one of `csv` or `json`. SQL query results will be s
 
 #### `postprocess` (optional)
 
-A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the "Postprocessing section".
+A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the ["Postprocessing section"](https://github.com/githubocto/flat#postprocessing).
 
 ## Outputs
 
