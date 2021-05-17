@@ -172,12 +172,6 @@ The postprocessing script is invoked with `deno run -q -A --unstable {your scrip
 
 The learn more about the possibilities for postprocessing check out our [helper and examples postprocessing repo](https://github.com/githubocto/flat-postprocessing).
 
-## Issues
-
-If you run into any trouble or have questions, feel free to [open an issue](https://github.com/githubocto/flat/issues).
-
-❤️ GitHub OCTO
-
 ## Building / Releasing
 
 1. `npm run dist` and commit the built output (yes, you read that right)
@@ -190,6 +184,12 @@ If you run into any trouble or have questions, feel free to [open an issue](http
 4. Create a new tag for the version: `git tag -f vMAJOR.MINOR.PATCH`
 5. Push main `git checkout main && git push`
 6. Navigate to https://github.com/githubocto/flat/tags and cut a new release from the tag you just pushed!
+
+## Issues
+
+If you run into any trouble or have questions, feel free to [open an issue](https://github.com/githubocto/flat/issues).
+
+❤️ GitHub OCTO
 
 ## License
 
