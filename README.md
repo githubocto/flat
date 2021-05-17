@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="docs/logo.png" width=512>
+  <img src="docs/logo.png" width=400>
 </p>
 
 <p align="center">
@@ -7,43 +7,33 @@
   <img src="https://img.shields.io/github/release-date/githubocto/flat.svg">
 </p>
 
-# Flat
+# Flat Data GitHub Action
 
-Flat is a GitHub action which makes it easy to fetch data and commit it to your repository as flatfiles. The action is intended to be run on a schedule, retrieving data from any supported target and creating a commit if there is any change to the fetched data.
+➡️ ➡️ ➡️ **Full writeup**: [Flat Data Project](https://octo.github.com/projects/flat-data) ⬅️ ⬅️ ⬅️
 
-Just as [materialized views](https://en.wikipedia.org/wiki/Materialized_view) make it easier and faster to work the results of a query, Flat makes it easy to materialize data from anywhere into your workspace.
+Flat Data is a GitHub action which makes it easy to fetch data and commit it to your repository as flatfiles. The action is intended to be run on a schedule, retrieving data from any supported target and creating a commit if there is any change to the fetched data. Flat Data builds on the [“git scraping” approach pioneered by Simon Willison](https://simonwillison.net/2020/Oct/9/git-scraping/) to offer a simple pattern for bringing working datasets into your repositories and versioning them, because developing against local datasets is faster and easier than working with data over the wire.
 
-✨ Best used in tandem with the [Flat VS Code Extension](https://github.com/githubocto/flat-vscode).
-
-Flat streamlines a pattern popularized by [Simon Willison](https://simonwillison.net/2020/Oct/9/git-scraping/) and [Alex Gaynor](https://github.com/alex/nyt-2020-election-scraper). The pattern of pulling data into git is an interesting one that deserves a dead-simple developer experience. Flat is an experiment from [GitHub's Office of the CTO](https://octo.github.com) to make it easier for anyone to employ this pattern.
+✨ Best used in tandem with the [Flat Editor VS Code Extension](https://marketplace.visualstudio.com/items?itemName=GitHubOCTO.flat).
 
 ## Why would I want to use this?
 
-Ultimately, Flat is about getting data into your repo with a minimum of fuss. These are some examples of what you can use it for, but this is by no means an exhaustive list.
+Flat Data aims to simplify everyday data acquisition and cleanup tasks. It runs on GitHub Actions, so there's no infrastructure to provision and monitor. Each Flat workflow fetches the data you specify, and optionally executes a postprocessing script on the fetched data. The resulting data is committed to your repository if the new data is different, with a commit message summarizing the changes. Flat workflows usually run on a periodic timer, but can be triggered by a variety of stimuli, like changes to your code, or manual triggers. That's it! No complicated job dependency graphs or orchestrators. No dependencies, libraries, or package managers. No new mental model to learn and incorporate. Just evergreen data, right in your repo.
 
-- **Evergreen working sets of data, delivered to your repo.** Big data is not usable in its raw form. Most of the time, we need to filter and aggregate in order to prepare a bite we can chew. You can do it manually, or you can have flat do it for you.
-- **Self-updating test fixtures**: How often have you shipped a bug to production because your tests' fixtures contained a snapshot of production data from seven months ago? That's definitely never happened to us. Ever.
-- **Turn snapshots into histories**: sometimes, the data you want is only available as a snapshot of the current state of a system. Use Flat to capture snapshots over time. This is great for anything that must be audited; if you can make the state of a system queryable, you can have Flat capture a checksummed history of how things were. Blockchain without they hype!
-- **A paved path between datastores and static webapps**: pull data into your webapp. New data triggers new deploys. You can ship an static app right from your repo with [GitHub Pages](https://pages.github.com). This has the nice property of bringing the data your thing needs into a GitOpsish workflow.
+[Read more in our writeup](https://octo.github.com/projects/flat-data).
 
-## Antipatterns
+## Examples
 
-Git is remarkably flexible, but it is not a great tool for storing a lot of data, or for storing binary data. It can do these things, but it will make your repo bloated and slow, and you may run up against [GitHub's size limitations](https://docs.github.com/en/github/managing-large-files/what-is-my-disk-quota#file-and-repository-size-limitations).
-
-There's a tradeoff to be made between overall data size and rate of data change. If you know that your data does not change very often, then you can probably tolerate a larger amount of data.
+Check out our [example repositories](https://github.com/githubocto?q=flat-demo&type=&language=&sort=).
 
 ## Usage
 
-### VS Code & Codespaces
+### Option 1: Flat Editor VSCode Extension
 
-The easiest way to get a Flat fetcher up and running is with the [flat-vscode extension](). There are two ways to do this:
+The easiest way to get a Flat Data action up and running is with the accompanying [Flat Editor VSCode Extension](https://marketplace.visualstudio.com/items?itemName=GitHubOCTO.flat) which helps you author Flat yml files. 
 
-1. Using VS Code on your desktop.
-2. Creating a [GitHub Codespace](https://github.com/features/codespaces) in the repository you wish to fetch data into.
+To use it, [install the extension](https://marketplace.visualstudio.com/items?itemName=GitHubOCTO.flat) and then invoke `Flat Editor` from the command palette within VSCode (Mac: ⌘⇧P, Others:ctrl-shift-P).
 
-To use it, [install the extension]() and then invoke `flat` from the command palette (Mac: ⌘⇧P, Others:ctrl-shift-P).
-
-### Manually in a GitHub Actions workflow
+### Option 2: Manually create a GitHub Actions workflow yml file
 
 In the repository where you wish to fetch data, create `.github/workflows/flat.yml`. The following example will fetch a URL every thirty minutes and commit the response, but only if the response has changed since the last commit.
 
@@ -170,7 +160,7 @@ await writeJSON(newfile, data.path.to.something)
 
 You can use `console.log()` as much as you like within your postprocessing script; the results should show up in your actions log.
 
-### Why deno?
+### Why Deno?
 
 Deno's import-by-url model makes it easy to author lightweight scripts that can include dependencies without forcing you to set up a bundler.
 
@@ -182,10 +172,6 @@ The postprocessing script is invoked with `deno run -q -A --unstable {your scrip
 
 The learn more about the possibilities for postprocessing check out our [helper and examples postprocessing repo](https://github.com/githubocto/flat-postprocessing).
 
-
-# Contributing
-
-WIP!
 
 ## Building / Releasing
 
