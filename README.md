@@ -172,6 +172,11 @@ The postprocessing script is invoked with `deno run -q -A --unstable {your scrip
 
 The learn more about the possibilities for postprocessing check out our [helper and examples postprocessing repo](https://github.com/githubocto/flat-postprocessing).
 
+## Issues
+
+If you run into any trouble or have questions, feel free to [open an issue](https://github.com/githubocto/flat/issues).
+
+❤️ GitHub OCTO
 
 ## Building / Releasing
 
