@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v2
       # The Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
       - name: Fetch data
-        uses: githubocto/flat@v1
+        uses: githubocto/flat@v2
         with:
           http_url: # THE URL YOU WISH TO FETCH GOES HERE
           downloaded_filename: # The http_url gets saved and renamed in our repository. Example: data.json, data.csv, image.png
