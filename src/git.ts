@@ -2,7 +2,6 @@ import { exec, ExecOptions } from '@actions/exec'
 import { statSync } from 'fs'
 import path from 'path'
 import * as core from '@actions/core'
-import { CONNREFUSED } from 'node:dns'
 
 export type GitStatus = {
   flag: string
