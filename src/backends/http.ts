@@ -9,6 +9,9 @@ export default async function fetchHTTP(config: HTTPConfig): Promise<string> {
     const response = await axios.get(config.http_url, {
       method: 'get',
       responseType: 'stream',
+      headers: {
+        authorization: config.authorization,
+      },
     })
     const filename = config.downloaded_filename
     const writer = fs.createWriteStream(filename)
