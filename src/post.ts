@@ -21,8 +21,20 @@ const run = async () => {
     undefined,
     2
   )
+  // @ts-ignore
+  console.defaultLog = console.log.bind(console)
+  // @ts-ignore
+  console.logs = []
+  // @ts-ignore
+  console.log = function () {
+    // @ts-ignore
+    console.defaultLog.apply(console, arguments)
+    // @ts-ignore
+    console.logs.push(Array.from(arguments))
+  }
   console.log(meta)
-  core.info(meta)
+  // @ts-ignore
+  const obfuscatedMeta = console.logs[0][0]
   const msg = `Flat: latest data (${date})`
 
   // Don't want to commit if there aren't any files changed!
@@ -31,7 +43,7 @@ const run = async () => {
   // these should already be staged, in main.ts
   core.info(`Committing "${msg}"`)
   core.debug(meta)
-  await exec('git', ['commit', '-m', msg + '\n' + meta])
+  await exec('git', ['commit', '-m', msg + '\n' + obfuscatedMeta])
   await exec('git', ['push'])
   core.info(`Pushed!`)
   core.exportVariable('HAS_RUN_POST_JOB', 'true')
