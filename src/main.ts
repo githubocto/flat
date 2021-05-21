@@ -59,6 +59,10 @@ async function run(): Promise<void> {
   core.startGroup('File changes')
   console.log('source in changes')
   console.log(source)
+  const test_var2 = await execSync(`echo "::add-mask::${source}"`).toString()
+  core.info('test_var2')
+  core.info(test_var2)
+  core.info(test_var2.length + '')
 
   const newUnstagedFiles = await execSync(
     'git ls-files --others --exclude-standard'
@@ -86,7 +90,7 @@ async function run(): Promise<void> {
     await exec('git', ['add', filename])
     const bytes = await diff(filename)
     // core.setOutput('delta_bytes', bytes)
-    editedFiles.push({ name: filename, deltaBytes: bytes, source })
+    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var2 })
   }
   core.endGroup()
 
