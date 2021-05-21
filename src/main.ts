@@ -62,7 +62,7 @@ async function run(): Promise<void> {
   const test_var = await execSync(`echo "${source}"`).toString()
   core.info('test_var')
   console.log(test_var)
-  const test_var2 = await execSync(`echo "::add-mask::${source}"`).toString()
+  const test_var2 = await execSync(`echo "::add-mask::$MY_SECRET"`).toString()
   core.info('test_var2')
   console.log(test_var2)
   core.info(test_var2)
@@ -84,6 +84,8 @@ async function run(): Promise<void> {
   core.info(modifiedUnstagedFiles + '')
   core.info('editedFilenames')
   core.info(JSON.stringify(editedFilenames))
+  console.log('secrets')
+  console.log(Object.keys(process.env).join(','))
 
   core.endGroup()
 
