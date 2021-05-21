@@ -24,11 +24,7 @@ async function run(): Promise<void> {
   let source
   if (isHTTPConfig(config)) {
     filename = await fetchHTTP(config)
-    console.log('config')
-    console.log(config)
     source = config.http_url
-    console.log('source')
-    console.log(source)
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
   } else {
@@ -62,12 +58,6 @@ async function run(): Promise<void> {
   const test_var = await execSync(`echo "${source}"`).toString()
   core.info('test_var')
   console.log(test_var)
-  const test_var2 = await execSync(`echo "::add-mask::$MY_SECRET"`).toString()
-  core.info('test_var2')
-  console.log(test_var2)
-  core.info(test_var2)
-  console.log(test_var.length + '')
-  console.log(test_var2.length + '')
 
   const newUnstagedFiles = await execSync(
     'git ls-files --others --exclude-standard'
@@ -84,8 +74,6 @@ async function run(): Promise<void> {
   core.info(modifiedUnstagedFiles + '')
   core.info('editedFilenames')
   core.info(JSON.stringify(editedFilenames))
-  console.log('secrets')
-  console.log(Object.keys(process.env).join(','))
 
   core.endGroup()
 
@@ -97,7 +85,7 @@ async function run(): Promise<void> {
     await exec('git', ['add', filename])
     const bytes = await diff(filename)
     // core.setOutput('delta_bytes', bytes)
-    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var2 })
+    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var })
   }
   core.endGroup()
 

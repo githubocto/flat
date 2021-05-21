@@ -42,6 +42,8 @@ const run = async () => {
         date,
         files,
     }, undefined, 2);
+    console.log(meta);
+    core.info(meta);
     const msg = `Flat: latest data (${date})`;
     // Don't want to commit if there aren't any files changed!
     if (!files.length)
