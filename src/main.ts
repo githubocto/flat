@@ -61,6 +61,7 @@ async function run(): Promise<void> {
   console.log(source)
   const test_var2 = await execSync(`echo "::add-mask::${source}"`).toString()
   core.info('test_var2')
+  console.log(test_var2)
   core.info(test_var2)
   core.info(test_var2.length + '')
 

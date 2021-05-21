@@ -37,8 +37,6 @@ const run = async () => {
         return;
     }
     const files = JSON.parse(process.env.FILES || '[]');
-    core.info('files');
-    core.info(files[0].source);
     const date = new Date().toISOString();
     const meta = JSON.stringify({
         date,
