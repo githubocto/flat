@@ -27,6 +27,8 @@ async function run(): Promise<void> {
     console.log('config')
     console.log(config)
     source = config.http_url
+    console.log('source')
+    console.log(source)
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
   } else {
@@ -55,6 +57,8 @@ async function run(): Promise<void> {
   }
 
   core.startGroup('File changes')
+  console.log('source in changes')
+  console.log(source)
 
   const newUnstagedFiles = await execSync(
     'git ls-files --others --exclude-standard'
@@ -97,6 +101,8 @@ async function run(): Promise<void> {
 
   const files = [...alreadyEditedFiles, ...editedFiles]
   core.exportVariable('FILES', files)
+  console.log('files')
+  console.log(files)
 
   core.endGroup()
 }
