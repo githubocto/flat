@@ -11,6 +11,8 @@ const run = async () => {
   }
 
   const files = JSON.parse(process.env.FILES || '[]')
+  core.info('files')
+  core.info(files)
 
   const date = new Date().toISOString()
   const meta = JSON.stringify(
