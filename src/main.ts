@@ -66,7 +66,8 @@ async function run(): Promise<void> {
   core.info('test_var2')
   console.log(test_var2)
   core.info(test_var2)
-  core.info(test_var2.length + '')
+  console.log(test_var.length + '')
+  console.log(test_var2.length + '')
 
   const newUnstagedFiles = await execSync(
     'git ls-files --others --exclude-standard'
@@ -94,7 +95,7 @@ async function run(): Promise<void> {
     await exec('git', ['add', filename])
     const bytes = await diff(filename)
     // core.setOutput('delta_bytes', bytes)
-    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var2 })
+    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var })
   }
   core.endGroup()
 
