@@ -95,7 +95,7 @@ async function run(): Promise<void> {
     await exec('git', ['add', filename])
     const bytes = await diff(filename)
     // core.setOutput('delta_bytes', bytes)
-    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var })
+    editedFiles.push({ name: filename, deltaBytes: bytes, source: test_var2 })
   }
   core.endGroup()
 
@@ -109,9 +109,9 @@ async function run(): Promise<void> {
   core.info(JSON.stringify(editedFiles))
 
   const files = [...alreadyEditedFiles, ...editedFiles]
-  core.exportVariable('FILES', files)
   console.log('files')
   console.log(files)
+  core.exportVariable('FILES', files)
 
   core.endGroup()
 }
