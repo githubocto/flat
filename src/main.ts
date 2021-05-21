@@ -24,6 +24,8 @@ async function run(): Promise<void> {
   let source
   if (isHTTPConfig(config)) {
     filename = await fetchHTTP(config)
+    console.log('config')
+    console.log(config)
     source = config.http_url
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
@@ -44,9 +46,8 @@ async function run(): Promise<void> {
         `deno run -q -A --unstable ${config.postprocess} ${filename}`
       ).toString()
 
-      core.info("Deno output:")
+      core.info('Deno output:')
       core.info(raw)
-
     } catch (error) {
       core.setFailed(error)
     }
@@ -96,7 +97,7 @@ async function run(): Promise<void> {
 
   const files = [...alreadyEditedFiles, ...editedFiles]
   core.exportVariable('FILES', files)
-  
+
   core.endGroup()
 }
 
