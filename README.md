@@ -29,7 +29,7 @@ Check out our [example repositories](https://github.com/githubocto?q=flat-demo&t
 
 ### Option 1: Flat Editor VSCode Extension
 
-The easiest way to get a Flat Data action up and running is with the accompanying [Flat Editor VSCode Extension](https://marketplace.visualstudio.com/items?itemName=GitHubOCTO.flat) which helps you author Flat yml files. 
+The easiest way to get a Flat Data action up and running is with the accompanying [Flat Editor VSCode Extension](https://marketplace.visualstudio.com/items?itemName=GitHubOCTO.flat) which helps you author Flat yml files.
 
 To use it, [install the extension](https://marketplace.visualstudio.com/items?itemName=GitHubOCTO.flat) and then invoke `Flat Editor` from the command palette within VSCode (Mac: ⌘⇧P, Others:ctrl-shift-P).
 
@@ -85,13 +85,25 @@ These two modes are exclusive; you cannot mix settings for these two in one Flat
 
 #### `http_url`
 
-A URL from which to fetch data. Specifying this input puts Flat into `http` mode. 
+A URL from which to fetch data. Specifying this input puts Flat into `http` mode.
 
 This can be any endpoint: a json, csv, png, zip, xlsx, etc.
 
+#### `authorization` (optional)
+
+A string used for authorizing the HTTP request. The value of this field is passed in as a header w/ the `authorization` key.
+
+For example, if this field is set to `Bearer abc123` then the following header is sent with each request:
+
+```json
+{
+  "Authorization": "Bearer abc123"
+}
+```
+
 #### `downloaded_filename`
 
-The name of the file to store data fetched by Flat. 
+The name of the file to store data fetched by Flat.
 
 In `http` mode this can be anything. This can be any endpoint: a json, csv, txt, png, zip, xlsx, etc. file
 
@@ -115,14 +127,13 @@ A URI-style database connection string. Flat will use this connection string to 
 >
 > If you're using the [flat-vscode extension](https://github.com/githubocto/flat-vscode), this is handled for you.
 
-
 #### `sql_queryfile`
 
 The pathname of the file containing the SQL query that will be issued to the database. Defaults to `.github/workflows/query.sql`. This path is relative to the root of your repo.
 
 #### `downloaded_filename`
 
-The name of the file to store data fetched by Flat. 
+The name of the file to store data fetched by Flat.
 
 In `sql` mode this should be one of `csv` or `json`. SQL query results will be serialized to disk in the specified format.
 
