@@ -22,9 +22,22 @@ async function run(): Promise<void> {
   core.startGroup('Fetch data')
   let filename = ''
   let source
+  let sourceStripped = ''
   if (isHTTPConfig(config)) {
     filename = await fetchHTTP(config)
     source = config.http_url
+
+    // if including a mask config then we strip out secrets from the http_url
+    sourceStripped = source
+    if (config.mask) {
+      core.info('Masking http url')
+      
+      const maskArray: string[] = JSON.parse(config.mask)
+      maskArray.forEach((secretToMask: string) => {
+        const regex = new RegExp(secretToMask, "g")
+        sourceStripped = sourceStripped.replace(regex, "***")
+      })
+    }
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
   } else {
@@ -81,7 +94,7 @@ async function run(): Promise<void> {
     await exec('git', ['add', filename])
     const bytes = await diff(filename)
     // core.setOutput('delta_bytes', bytes)
-    editedFiles.push({ name: filename, deltaBytes: bytes, source })
+    editedFiles.push({ name: filename, deltaBytes: bytes, source: sourceStripped })
   }
   core.endGroup()
 

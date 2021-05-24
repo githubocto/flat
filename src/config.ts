@@ -13,6 +13,7 @@ export type CommonConfig = z.infer<typeof CommonConfigSchema>
 const HTTPConfigSchema = z
   .object({
     http_url: z.string(),
+    mask: z.string().optional()
   })
   .merge(CommonConfigSchema)
 export type HTTPConfig = z.infer<typeof HTTPConfigSchema>
@@ -33,6 +34,7 @@ export function getConfig(): Config {
   const keys = [
     'downloaded_filename',
     'http_url',
+    'mask',
     'sql_connstring',
     'sql_queryfile',
     'postprocess',
