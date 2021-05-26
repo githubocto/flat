@@ -8,6 +8,9 @@ inputs:
   http_url:
     description: 'A URL containing data to fetch.'
     required: false
+  mask:
+    description: 'A string array of secrets to strip from the http_url or a string boolean'
+    required: false
   sql_connstring:
     description: 'A connection string for making a SQL query.'
     required: false
