@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v2
       # The Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
       - name: Fetch data
-        uses: githubocto/flat@v1
+        uses: githubocto/flat@v2
         with:
           http_url: # THE URL YOU WISH TO FETCH GOES HERE
           downloaded_filename: # The http_url gets saved and renamed in our repository. Example: data.json, data.csv, image.png
@@ -110,7 +110,7 @@ A URI-style database connection string. Flat will use this connection string to 
 > Most connection strings contain an authentication secret like a username and password. GitHub provides an encrypted vault for secrets like these which can be used by the action when it runs. [Create a secret](https://docs.github.com/en/actions/reference/encrypted-secrets#creating-encrypted-secrets-for-a-repository) on the repository where the Flat action will run, and use that secret in your workflow.yaml like so:
 >
 > ```
-> sql_connstring: ${{NAME_OF_THE_CREATED_SECRET}}
+> sql_connstring: ${{secrets.NAME_OF_THE_CREATED_SECRET}}
 > ```
 >
 > If you're using the [flat-vscode extension](https://github.com/githubocto/flat-vscode), this is handled for you.
