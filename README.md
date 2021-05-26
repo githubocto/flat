@@ -99,6 +99,19 @@ In `http` mode this can be anything. This can be any endpoint: a json, csv, txt,
 
 A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the ["Postprocessing section"](https://github.com/githubocto/flat#postprocessing).
 
+#### `mask` (optional)
+
+If your `http_url` string contains secrets, you can choose to mask it from the commit message. You have two options:
+
+**Option 1**: use a string boolean
+
+`mask: true # removes the source entirely from the commit message, defaults to false`
+
+**Option 2**: use a string array with each secret to mask
+
+`mask: '["${{ secrets.SECRET1 }}", "${{ secrets.SECRET2 }}"]'`
+
+
 ### SQL Mode
 
 #### `sql_connstring`
