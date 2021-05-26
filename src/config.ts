@@ -13,7 +13,7 @@ export type CommonConfig = z.infer<typeof CommonConfigSchema>
 const HTTPConfigSchema = z
   .object({
     http_url: z.string(),
-    mask: z.string().optional()
+    mask: z.string().optional() // string array of secrets or boolean
   })
   .merge(CommonConfigSchema)
 export type HTTPConfig = z.infer<typeof HTTPConfigSchema>
@@ -40,7 +40,7 @@ export function getConfig(): Config {
     'postprocess',
   ]
   keys.forEach(k => {
-    const v = core.getInput(k)
+    const v = core.getInput(k) // getInput always returns a string
     if (v) {
       raw[k] = v
     }

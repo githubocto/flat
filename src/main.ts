@@ -22,21 +22,28 @@ async function run(): Promise<void> {
   core.startGroup('Fetch data')
   let filename = ''
   let source
-  let sourceStripped = ''
+  let shouldMask = false // by default we don't mask the source
+  let sourceMasked = ''
   if (isHTTPConfig(config)) {
     filename = await fetchHTTP(config)
     source = config.http_url
 
-    // if including a mask config then we strip out secrets from the http_url
-    sourceStripped = source
+    // if including a mask config then we can strip out secrets from the http_url
+    sourceMasked = source // if no secrets to mask then this is just source
     if (config.mask) {
-      core.info('Masking http url')
-      
-      const maskArray: string[] = JSON.parse(config.mask)
-      maskArray.forEach((secretToMask: string) => {
-        const regex = new RegExp(secretToMask, "g")
-        sourceStripped = sourceStripped.replace(regex, "***")
-      })
+      if (config.mask === 'true' || config.mask === 'false') { // mask param is a string
+        shouldMask = JSON.parse(config.mask) // convert to boolean
+      } else {
+        try {
+          const maskArray: string[] = JSON.parse(config.mask)
+          maskArray.forEach((secretToMask: string) => {
+            const regex = new RegExp(secretToMask, "g")
+            sourceMasked = sourceMasked.replace(regex, "***")
+          })
+        } catch(error) {
+          core.setFailed('Mask param formatted incorrectly. It should be a string array OR a "true" or "false" string.')
+        }
+      }
     }
   } else if (isSQLConfig(config)) {
     filename = await fetchSQL(config)
@@ -93,8 +100,9 @@ async function run(): Promise<void> {
     core.debug(`git adding ${filename}…`)
     await exec('git', ['add', filename])
     const bytes = await diff(filename)
-    // core.setOutput('delta_bytes', bytes)
-    editedFiles.push({ name: filename, deltaBytes: bytes, source: sourceStripped })
+
+    const source = shouldMask ? {} : { source: sourceMasked }
+    editedFiles.push({ name: filename, deltaBytes: bytes, ...source })
   }
   core.endGroup()
 
