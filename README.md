@@ -148,7 +148,7 @@ A common use case for this value is connecting your [Flat action to a Heroku dat
 For instance, you can pass the following configuration string to your Flat action in order to connect to a Heroku Postgres database.
 
 ```yaml
-typeorm_config: '{"ssl":true,"extra":{"ssl":{"rejectUnauthorized":false}}}'`
+typeorm_config: '{"ssl":true,"extra":{"ssl":{"rejectUnauthorized":false}}}'
 ```
 
 #### `postprocess` (optional)
