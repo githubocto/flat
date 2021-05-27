@@ -18,6 +18,9 @@ inputs:
     description: 'A path (relative to the root of your repo) of a SQL query file to execute for fetching data.'
     required: false
     default: '.github/workflows/query.sql'
+  typeorm_config:
+    description: 'A JSON string representing a configuration passed to TypeORM\'s createConnection function'
+    required: false
   postprocess:
     description: 'A path (relative to the root of your repo) or a URL to a deno postprocessing script.'
     required: false
