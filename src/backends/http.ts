@@ -5,17 +5,24 @@ import axios from 'axios'
 
 export default async function fetchHTTP(config: HTTPConfig): Promise<string> {
   core.info('Fetching: HTTP')
+
+  // Authorization headers
+  const auth = { 
+    headers: {
+      authorization: config.authorization,
+    }
+  };
+  const headers = config.authorization ? auth : {}
+  core.info(headers.toString());
+
   try {
     const response = await axios.get(config.http_url, {
       method: 'get',
       responseType: 'stream',
-      headers: {
-        authorization: config.authorization,
-      },
+      ...headers,
     })
     const filename = config.downloaded_filename
     const writer = fs.createWriteStream(filename)
-    let bytesWritten = 0
     response.data.pipe(writer)
     await new Promise((resolve, reject) => {
       writer.on('finish', resolve)
