@@ -10,6 +10,7 @@ inputs:
     required: false
   authorization:
     description: 'A string to send as a header for authorizing API requests.'
+    required: false
   mask:
     description: 'A string array of secrets to strip from the http_url or a string boolean'
     required: false
