@@ -13,7 +13,7 @@ export default async function fetchHTTP(config: HTTPConfig): Promise<string> {
     }
   };
   const headers = config.authorization ? auth : {}
-  core.info(headers.toString());
+  core.info(JSON.stringify(headers));
 
   try {
     const response = await axios.get(config.http_url, {
