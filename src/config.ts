@@ -13,6 +13,7 @@ export type CommonConfig = z.infer<typeof CommonConfigSchema>
 const HTTPConfigSchema = z
   .object({
     http_url: z.string(),
+    authorization: z.string().optional(),
     mask: z.string().optional(), // string array of secrets or boolean
   })
   .merge(CommonConfigSchema)
@@ -35,6 +36,7 @@ export function getConfig(): Config {
   const keys = [
     'downloaded_filename',
     'http_url',
+    'authorization',
     'mask',
     'sql_connstring',
     'sql_queryfile',

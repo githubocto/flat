@@ -89,6 +89,21 @@ A URL from which to fetch data. Specifying this input puts Flat into `http` mode
 
 This can be any endpoint: a json, csv, png, zip, xlsx, etc.
 
+#### `authorization` (optional)
+
+A string used for authorizing the HTTP request. The value of this field is passed in as a header w/ the `authorization` key.
+
+For example, if this field is set to `Bearer abc123` then the following header is sent with each request:
+
+```json
+{
+  "Authorization": "Bearer abc123"
+}
+```
+
+And in the action yaml:
+`authorization: 'Bearer abc123'`
+
 #### `downloaded_filename`
 
 The name of the file to store data fetched by Flat.
