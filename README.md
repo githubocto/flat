@@ -101,6 +101,9 @@ For example, if this field is set to `Bearer abc123` then the following header i
 }
 ```
 
+And in the action yaml:
+`authorization: 'Bearer abc123'`
+
 #### `downloaded_filename`
 
 The name of the file to store data fetched by Flat.
