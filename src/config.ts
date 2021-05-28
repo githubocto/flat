@@ -14,6 +14,7 @@ const HTTPConfigSchema = z
   .object({
     http_url: z.string(),
     authorization: z.string().optional(),
+    mask: z.string().optional(), // string array of secrets or boolean
   })
   .merge(CommonConfigSchema)
 export type HTTPConfig = z.infer<typeof HTTPConfigSchema>
@@ -22,6 +23,7 @@ const SQLConfigSchema = z
   .object({
     sql_connstring: z.string(),
     sql_queryfile: z.string(),
+    typeorm_config: z.string().optional(),
   })
   .merge(CommonConfigSchema)
 export type SQLConfig = z.infer<typeof SQLConfigSchema>
@@ -35,12 +37,14 @@ export function getConfig(): Config {
     'downloaded_filename',
     'http_url',
     'authorization',
+    'mask',
     'sql_connstring',
     'sql_queryfile',
     'postprocess',
+    'typeorm_config',
   ]
   keys.forEach(k => {
-    const v = core.getInput(k)
+    const v = core.getInput(k) // getInput always returns a string
     if (v) {
       raw[k] = v
     }

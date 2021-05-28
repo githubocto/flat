@@ -3,7 +3,6 @@ import { ConnectionString } from 'connection-string'
 import { createWriteStream, readFileSync, writeFileSync } from 'fs'
 import { createConnection, DatabaseType } from 'typeorm'
 import { SQLConfig } from '../config'
-import * as path from 'path'
 import stringify from 'csv-stringify'
 
 // TODO: wish there was a dynamic way to import this for runtime usage from the DatabaseType type
@@ -64,10 +63,23 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
       )
     }
 
+    let userProvidedConfiguration = {}
+
+    try {
+      userProvidedConfiguration = config.typeorm_config
+        ? JSON.parse(config.typeorm_config)
+        : {}
+    } catch (error) {
+      core.setFailed(
+        'Failed to parse JSON string containing TypeORM configuration for createConnection function'
+      )
+    }
+
     // @ts-ignore
     connection = await createConnection({
       type: protocol,
       url: config.sql_connstring,
+      ...userProvidedConfiguration,
     })
   } catch (error) {
     core.setFailed(`Unable to connect to database: ${error.message}`)
@@ -85,7 +97,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
 
   core.info('Closing database')
   try {
-    await connection.close();
+    await connection.close()
   } catch (error) {
     core.setFailed(`Unable to close database: ${error.message}`)
     throw error

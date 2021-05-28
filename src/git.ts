@@ -46,13 +46,14 @@ async function getHeadSize(path: string): Promise<number | undefined> {
   }
 }
 
-async function diffSize(file: GitStatus): Promise<number> {
-  const stat = statSync(file.path)
-  core.debug(
-    `Calculating diff for ${JSON.stringify(file)}, with size ${stat.size}b`
-  )
-  switch (file.flag) {
-    case 'M':
+async function diffSize(file: GitStatus): Promise<number> {  
+  switch (file.flag) {    
+    case 'M': {
+      const stat = statSync(file.path)
+      core.debug(
+        `Calculating diff for ${JSON.stringify(file)}, with size ${stat.size}b`
+      )
+
       // get old size and compare
       const oldSize = await getHeadSize(file.path)
       const delta = oldSize === undefined ? stat.size : stat.size - oldSize
@@ -60,15 +61,27 @@ async function diffSize(file: GitStatus): Promise<number> {
         ` ==> ${file.path} modified: old ${oldSize}, new ${stat.size}, delta ${delta}b `
       )
       return delta
+    }
+    case 'A': {
+      const stat = statSync(file.path)
+      core.debug(
+        `Calculating diff for ${JSON.stringify(file)}, with size ${stat.size}b`
+      )
 
-    case 'A':
       core.debug(` ==> ${file.path} added: delta ${stat.size}b`)
       return stat.size
-
-    default:
+    }
+    case 'D': {
+      const oldSize = await getHeadSize(file.path)
+      const delta = oldSize === undefined ? 0 : oldSize
+      core.debug(` ==> ${file.path} deleted: delta ${delta}b`)
+      return delta
+    }
+    default: {
       throw new Error(
         `Encountered an unexpected file status in git: ${file.flag} ${file.path}`
       )
+    }
   }
 }
 
@@ -84,3 +97,4 @@ export async function diff(filename: string): Promise<number> {
   }
   return await diffSize(status)
 }
+

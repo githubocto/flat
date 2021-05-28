@@ -62,7 +62,7 @@ jobs:
         uses: actions/checkout@v2
       # The Flat Action step. We fetch the data in the http_url and save it as downloaded_filename
       - name: Fetch data
-        uses: githubocto/flat@v2
+        uses: githubocto/flat@v3
         with:
           http_url: # THE URL YOU WISH TO FETCH GOES HERE
           downloaded_filename: # The http_url gets saved and renamed in our repository. Example: data.json, data.csv, image.png
@@ -114,6 +114,18 @@ In `http` mode this can be anything. This can be any endpoint: a json, csv, txt,
 
 A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the ["Postprocessing section"](https://github.com/githubocto/flat#postprocessing).
 
+#### `mask` (optional)
+
+If your `http_url` string contains secrets, you can choose to mask it from the commit message. You have two options:
+
+**Option 1**: use a string boolean
+
+`mask: true # removes the source entirely from the commit message, defaults to false`
+
+**Option 2**: use a string array with each secret to mask
+
+`mask: '["${{ secrets.SECRET1 }}", "${{ secrets.SECRET2 }}"]'`
+
 ### SQL Mode
 
 #### `sql_connstring`
@@ -142,6 +154,18 @@ In `sql` mode this should be one of `csv` or `json`. SQL query results will be s
 
 > ⚠️ While the JSON is not pretty-printed, CSV is often a more efficient serialization for tabular data.
 
+#### `typeorm_config` (optional)
+
+A JSON string representing a configuration passed to [TypeORMs createConnection function](https://orkhan.gitbook.io/typeorm/docs/connection-api#main-api).
+
+A common use case for this value is connecting your [Flat action to a Heroku database](https://github.com/typeorm/typeorm/issues/278).
+
+For instance, you can pass the following configuration string to your Flat action in order to connect to a Heroku Postgres database.
+
+```yaml
+typeorm_config: '{"ssl":true,"extra":{"ssl":{"rejectUnauthorized":false}}}'
+```
+
 #### `postprocess` (optional)
 
 A path to a local Deno javascript or typescript file for postprocessing the `downloaded_filename` file. Read more in the ["Postprocessing section"](https://github.com/githubocto/flat#postprocessing).
@@ -156,7 +180,7 @@ A signed number describing the number of bytes that changed in this run. If the 
 
 You can add a `postprocess` input in the Action which is path to a [deno](https://deno.land) Javascript or Typescript script that will be invoked to postprocess your data after it is fetched. This path is relative to the root of your repo.
 
-The script can use either `Deno.args[0]` or the name of the `downloaded_filename` to access the file fetched by Flat Data. 
+The script can use either `Deno.args[0]` or the name of the `downloaded_filename` to access the file fetched by Flat Data.
 
 ```ts
 import { readJSON, writeJSON } from 'https://deno.land/x/flat/mod.ts'
