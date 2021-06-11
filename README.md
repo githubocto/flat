@@ -56,7 +56,7 @@ jobs:
       - name: Setup deno
         uses: denoland/setup-deno@main
         with:
-          deno-version: v1.x
+          deno-version: v1.10.x
       # Check out the repository so it can read the files inside of it and do other operations
       - name: Check out repo
         uses: actions/checkout@v2
