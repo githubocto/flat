@@ -61,7 +61,7 @@ async function run(): Promise<void> {
     core.debug(`Invoking ${config.postprocess} with ${filename}...`)
     try {
       const raw = execSync(
-        `deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable ${config.postprocess} ${filename}`
+        `NO_COLOR=true deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable ${config.postprocess} ${filename}`
       ).toString()
 
       core.info("Deno output:")
