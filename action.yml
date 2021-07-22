@@ -2,6 +2,9 @@ name: 'Flat Data'
 description: 'The GitHub action which powers data fetching for Flat'
 author: 'GitHub OCTO'
 inputs:
+  axios_config:
+    description: 'A path (relative to the root of your repo) of a JSON file containing a subset of Axios configuration'
+    required: false
   downloaded_filename:
     description: 'The filename to use for writing data.'
     required: false

@@ -101,8 +101,29 @@ For example, if this field is set to `Bearer abc123` then the following header i
 }
 ```
 
-And in the action yaml:
-`authorization: 'Bearer abc123'`
+#### `axios_config` (optional)
+
+Under the hood, the `http` backend uses [Axios](https://github.com/axios/axios) for data fetching. By default, Flat assumes you're interested in using the `GET` method to fetch data, but if you'd like to `POST` (e.g., sending a GraphQL query), the `axios_config` option allows you to override this behavior.
+
+Specifically, the `axios_config` parameter should reflect a relative path to a `.json` file in your repository. This JSON file should mirror the shape of [Axios' request config parameters](https://github.com/axios/axios#request-config), with a few notable exceptions.
+
+- `url` and `baseURL` will both be ignored, as the `http_url` specified above will take precedence.
+- `headers` will be merged in with the authorization header described by the `authorization` parameter above. Please do not put secret keys here, as they will be stored in plain text!
+- All `function` parameters will be ignored (e.g., `transformRequest`).
+- The response type is always set to `responseType: 'stream'` in the background.
+
+An example `axios_config` might look thusly if you were interested in hitting GitHub's GraphQL API ([here is a demo](https://github.com/githubocto/flat-demo-graphql)) 👇
+
+```json
+{
+  "method": "post",
+  "data": {
+    "query": "query { repository(owner:\"octocat\", name:\"Hello-World\") { issues(last:20, states:CLOSED) { edges { node { title url labels(first:5) { edges { node { name } } } } } } } }"
+  }
+}
+```
+
+We advise escaping double quotes like `\"` in your JSON file.
 
 #### `downloaded_filename`
 
