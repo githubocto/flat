@@ -1,0 +1,24 @@
+name: Repo Events Repository Dispatch
+
+on:
+  - issues
+  - issue_comment
+  - pull_request
+
+jobs:
+  preflight-job:
+    name: Dispatch
+    runs-on: ubuntu-latest
+    steps:
+      - name: Print Outputs
+        env:
+          outputs: ${{ toJSON(github) }}
+        run: |
+          echo outputs: $outputs
+      - name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v1
+        with:
+          token: ${{ secrets.PAT }} 
+          repository: githubocto/next-devex-workflows # repo to send event to
+          event-type: repoevents # name of the custom event
+          client-payload: '{"event": ${{ toJSON(github) }}}'
