@@ -29,7 +29,7 @@ const run = async () => {
   // these should already be staged, in main.ts
   core.info(`Committing "${msg}"`)
   core.debug(meta)
-  await exec('git', ['commit', '-m', msg + '\n' + meta])
+  await exec('git', ['commit', '-m', msg + '\n\n' + meta])
   await exec('git', ['push'])
   core.info(`Pushed!`)
   core.exportVariable('HAS_RUN_POST_JOB', 'true')
