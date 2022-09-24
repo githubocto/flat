@@ -61,17 +61,25 @@ async function run(): Promise<void> {
 
   if (config.postprocess) {
     core.startGroup('Postprocess')
-    core.debug(`Invoking ${config.postprocess} with ${filename}...`)
-    try {
-      const raw = execSync(
-        `NO_COLOR=true deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable ${config.postprocess} ${filename}`
-      ).toString()
 
-      core.info('Deno output:')
-      core.info(raw)
-    } catch (error) {
-      core.setFailed(error)
+    const changes = await execSync(`git diff ${filename}`).toString()
+    if (changes.length > 0) {
+      core.debug(`Invoking ${config.postprocess} with ${filename}...`)
+      try {
+        const raw = execSync(
+          `NO_COLOR=true deno run -q --allow-read --allow-write --allow-run --allow-net --allow-env --unstable ${config.postprocess} ${filename}`
+        ).toString()
+
+        core.info('Deno output:')
+        core.info(raw)
+      } catch (error) {
+        core.setFailed(error)
+      }
+    } else {
+      core.debug(`Skipping ${config.postprocess} because there were no changes to ${filename}.`)
     }
+
+    
     core.endGroup()
   }
 
