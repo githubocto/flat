@@ -233,16 +233,17 @@ The learn more about the possibilities for postprocessing check out our [helper 
 
 ## Building / Releasing
 
-1. `npm run dist` and commit the built output (yes, you read that right)
-2. Bump whatever you want to bump in the `package.json` version field
-3. Merge `main` into `vMAJOR` branch. `git checkout vMAJOR && git merge main`
+1. Set the `NODE_OPTIONS` environment variale to `--openssl-legacy-provider`
+2. `npm run dist` and commit the built output (yes, you read that right)
+3. Bump whatever you want to bump in the `package.json` version field
+4. Merge `main` into `vMAJOR` branch. `git checkout vMAJOR && git merge main`
 
 - If this is a new major version, create the branch. `git checkout -b vMAJOR`
 - Push the branch. `git push --set-upstream origin vMAJOR`
 
-4. Create a new tag for the version: `git tag -f vMAJOR.MINOR.PATCH`
-5. Push main `git checkout main && git push`
-6. Navigate to https://github.com/githubocto/flat/tags and cut a new release from the tag you just pushed!
+5. Create a new tag for the version: `git tag -f vMAJOR.MINOR.PATCH`
+6. Push main `git checkout main && git push`
+7. Navigate to https://github.com/githubocto/flat/tags and cut a new release from the tag you just pushed!
 
 ## Issues
 
