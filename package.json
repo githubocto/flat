@@ -4,9 +4,9 @@
   "description": "The GitHub action which powers data fetching for Flat",
   "main": "index.js",
   "scripts": {
-    "build": "tsc",
-    "package": "ncc build --source-map --license LICENSE --target es2020 lib/main.js",
-    "package-post": "ncc build --target es2020 lib/post.js -o dist/post",
+    "build": "NODE_OPTIONS=--openssl-legacy-provider tsc",
+    "package": "NODE_OPTIONS=--openssl-legacy-provider ncc build --source-map --license LICENSE --target es2020 lib/main.js",
+    "package-post": "NODE_OPTIONS=--openssl-legacy-provider ncc build --target es2020 lib/post.js -o dist/post",
     "dist": "npm run build && npm run package && npm run package-post",
     "format": "prettier --write **/*.ts",
     "test": "jest",
