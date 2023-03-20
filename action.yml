@@ -34,7 +34,7 @@ outputs:
   delta_bytes: # size of changed data
     description: The overall number of bytes changed in the output data this run (current size - previous size)
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
   post: 'dist/post/index.js'
 branding:

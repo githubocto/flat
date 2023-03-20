@@ -3,7 +3,7 @@ import { ConnectionString } from 'connection-string'
 import { createWriteStream, readFileSync, writeFileSync } from 'fs'
 import { createConnection, DatabaseType } from 'typeorm'
 import { SQLConfig } from '../config'
-import stringify from 'csv-stringify'
+import { stringify } from 'csv-stringify'
 
 // TODO: wish there was a dynamic way to import this for runtime usage from the DatabaseType type
 const TYPEORM_PROTOCOLS = [
@@ -41,7 +41,9 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
     query = readFileSync(config.sql_queryfile, { encoding: 'utf8' })
   } catch (error) {
     core.setFailed(
-      `Unable to read queryfile ${config.sql_queryfile}: ${error.message}`
+      `Unable to read queryfile ${config.sql_queryfile}: ${
+        (error as Error).message
+      }`
     )
     throw error
   }
@@ -82,7 +84,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
       ...userProvidedConfiguration,
     })
   } catch (error) {
-    core.setFailed(`Unable to connect to database: ${error.message}`)
+    core.setFailed(`Unable to connect to database: ${(error as Error).message}`)
     throw error
   }
 
@@ -91,7 +93,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
   try {
     result = await connection.query(query)
   } catch (error) {
-    core.setFailed(`Unable to query database: ${error.message}`)
+    core.setFailed(`Unable to query database: ${(error as Error).message}`)
     throw error
   }
 
@@ -99,7 +101,7 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
   try {
     await connection.close()
   } catch (error) {
-    core.setFailed(`Unable to close database: ${error.message}`)
+    core.setFailed(`Unable to close database: ${(error as Error).message}`)
     throw error
   }
 
@@ -125,7 +127,9 @@ export default async function fetchSQL(config: SQLConfig): Promise<string> {
     }
     return outfile
   } catch (error) {
-    core.setFailed(`Unable to write results to ${outfile}: ${error.message}`)
+    core.setFailed(
+      `Unable to write results to ${outfile}: (${(error as Error).message}`
+    )
     throw error
   }
 }

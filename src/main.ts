@@ -70,7 +70,7 @@ async function run(): Promise<void> {
       core.info('Deno output:')
       core.info(raw)
     } catch (error) {
-      core.setFailed(error)
+      core.setFailed(error as Error)
     }
     core.endGroup()
   }

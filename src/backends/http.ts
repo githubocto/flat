@@ -52,7 +52,7 @@ export default async function fetchHTTP(config: HTTPConfig): Promise<string> {
     })
     return filename
   } catch (error) {
-    core.setFailed(error)
+    core.setFailed(error as Error)
     throw error
   }
 }

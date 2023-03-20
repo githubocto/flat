@@ -1,11 +1,5 @@
-import {
-  Config,
-  getConfig,
-  HTTPConfig,
-  isHTTPConfig,
-  isSQLConfig,
-} from './config'
 import * as core from '@actions/core'
+import { getConfig } from './config'
 jest.mock('@actions/core')
 
 it('returns an HTTP config', () => {

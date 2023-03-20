@@ -65,7 +65,7 @@ export function getConfig(): Config {
   } catch (error) {
     throw new Error(
       `Invalid configuration!\nReceived: ${JSON.stringify(raw)}\nFailure:${
-        error.message
+        (error as Error).message
       }`
     )
   }
