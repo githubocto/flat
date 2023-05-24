@@ -1,8 +1,32 @@
 {
-  "name": "sqlite3",
-  "description": "Asynchronous, non-blocking SQLite3 bindings",
-  "version": "5.1.4",
-  "homepage": "https://github.com/TryGhost/node-sqlite3",
+  "_args": [
+    [
+      "sqlite3@5.1.4",
+      "/Users/evgenyrahman/code/tmp/flat"
+    ]
+  ],
+  "_from": "sqlite3@5.1.4",
+  "_id": "sqlite3@5.1.4",
+  "_inBundle": false,
+  "_integrity": "sha512-i0UlWAzPlzX3B5XP2cYuhWQJsTtlMD6obOa1PgeEQ4DHEXUuyJkgv50I3isqZAP5oFc2T8OFvakmDh2W6I+YpA==",
+  "_location": "/sqlite3",
+  "_phantomChildren": {},
+  "_requested": {
+    "type": "version",
+    "registry": true,
+    "raw": "sqlite3@5.1.4",
+    "name": "sqlite3",
+    "escapedName": "sqlite3",
+    "rawSpec": "5.1.4",
+    "saveSpec": null,
+    "fetchSpec": "5.1.4"
+  },
+  "_requiredBy": [
+    "/"
+  ],
+  "_resolved": "https://registry.npmjs.org/sqlite3/-/sqlite3-5.1.4.tgz",
+  "_spec": "5.1.4",
+  "_where": "/Users/evgenyrahman/code/tmp/flat",
   "author": {
     "name": "Mapbox",
     "url": "https://mapbox.com/"
@@ -18,24 +42,86 @@
       6
     ]
   },
+  "bugs": {
+    "url": "https://github.com/TryGhost/node-sqlite3/issues"
+  },
   "contributors": [
-    "Konstantin Käfer <mail@kkaefer.com>",
-    "Dane Springmeyer <dane@mapbox.com>",
-    "Will White <will@mapbox.com>",
-    "Orlando Vazquez <ovazquez@gmail.com>",
-    "Artem Kustikov <kustikoff@gmail.com>",
-    "Eric Fredricksen <efredricksen@gmail.com>",
-    "John Wright <mrjjwright@gmail.com>",
-    "Ryan Dahl <ry@tinyclouds.org>",
-    "Tom MacWright <tom@mapbox.com>",
-    "Carter Thaxton <carter.thaxton@gmail.com>",
-    "Audrius Kažukauskas <audrius@neutrino.lt>",
-    "Johannes Schauer <josch@pyneo.org>",
-    "Nathan Rajlich <nathan@tootallnate.net>",
-    "AJ ONeal <coolaj86@gmail.com>",
-    "Mithgol",
-    "Ben Noordhuis <ben@strongloop.com>"
+    {
+      "name": "Konstantin Käfer",
+      "email": "mail@kkaefer.com"
+    },
+    {
+      "name": "Dane Springmeyer",
+      "email": "dane@mapbox.com"
+    },
+    {
+      "name": "Will White",
+      "email": "will@mapbox.com"
+    },
+    {
+      "name": "Orlando Vazquez",
+      "email": "ovazquez@gmail.com"
+    },
+    {
+      "name": "Artem Kustikov",
+      "email": "kustikoff@gmail.com"
+    },
+    {
+      "name": "Eric Fredricksen",
+      "email": "efredricksen@gmail.com"
+    },
+    {
+      "name": "John Wright",
+      "email": "mrjjwright@gmail.com"
+    },
+    {
+      "name": "Ryan Dahl",
+      "email": "ry@tinyclouds.org"
+    },
+    {
+      "name": "Tom MacWright",
+      "email": "tom@mapbox.com"
+    },
+    {
+      "name": "Carter Thaxton",
+      "email": "carter.thaxton@gmail.com"
+    },
+    {
+      "name": "Audrius Kažukauskas",
+      "email": "audrius@neutrino.lt"
+    },
+    {
+      "name": "Johannes Schauer",
+      "email": "josch@pyneo.org"
+    },
+    {
+      "name": "Nathan Rajlich",
+      "email": "nathan@tootallnate.net"
+    },
+    {
+      "name": "AJ ONeal",
+      "email": "coolaj86@gmail.com"
+    },
+    {
+      "name": "Mithgol"
+    },
+    {
+      "name": "Ben Noordhuis",
+      "email": "ben@strongloop.com"
+    }
   ],
+  "dependencies": {
+    "@mapbox/node-pre-gyp": "^1.0.0",
+    "node-addon-api": "^4.2.0",
+    "node-gyp": "8.x",
+    "tar": "^6.1.11"
+  },
+  "description": "Asynchronous, non-blocking SQLite3 bindings",
+  "devDependencies": {
+    "eslint": "6.8.0",
+    "mocha": "7.2.0",
+    "node-pre-gyp-github": "1.4.4"
+  },
   "files": [
     "binding.gyp",
     "deps/",
@@ -43,19 +129,18 @@
     "lib/*.d.ts",
     "src/"
   ],
-  "repository": {
-    "type": "git",
-    "url": "https://github.com/TryGhost/node-sqlite3.git"
-  },
-  "dependencies": {
-    "@mapbox/node-pre-gyp": "^1.0.0",
-    "node-addon-api": "^4.2.0",
-    "tar": "^6.1.11"
-  },
-  "devDependencies": {
-    "eslint": "6.8.0",
-    "mocha": "7.2.0",
-    "node-pre-gyp-github": "1.4.4"
+  "homepage": "https://github.com/TryGhost/node-sqlite3",
+  "keywords": [
+    "sql",
+    "sqlite",
+    "sqlite3",
+    "database"
+  ],
+  "license": "BSD-3-Clause",
+  "main": "./lib/sqlite3",
+  "name": "sqlite3",
+  "optionalDependencies": {
+    "node-gyp": "8.x"
   },
   "peerDependencies": {
     "node-gyp": "8.x"
@@ -65,29 +150,23 @@
       "optional": true
     }
   },
-  "optionalDependencies": {
-    "node-gyp": "8.x"
+  "renovate": {
+    "extends": [
+      "@tryghost:base"
+    ]
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/TryGhost/node-sqlite3.git"
   },
   "scripts": {
     "build": "node-pre-gyp build",
     "build:debug": "node-pre-gyp build --debug",
     "install": "node-pre-gyp install --fallback-to-build",
+    "pack": "node-pre-gyp package",
     "pretest": "node test/support/createdb.js",
-    "test": "mocha -R spec --timeout 480000",
-    "pack": "node-pre-gyp package"
+    "test": "mocha -R spec --timeout 480000"
   },
-  "license": "BSD-3-Clause",
-  "keywords": [
-    "sql",
-    "sqlite",
-    "sqlite3",
-    "database"
-  ],
-  "main": "./lib/sqlite3",
   "types": "./lib/sqlite3.d.ts",
-  "renovate": {
-    "extends": [
-      "@tryghost:base"
-    ]
-  }
+  "version": "5.1.4"
 }
