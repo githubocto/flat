@@ -16,7 +16,7 @@ jobs:
         run: |
           echo outputs: $outputs
       - name: Repository Dispatch
-        uses: peter-evans/repository-dispatch@v1
+        uses: peter-evans/repository-dispatch@v2
         with:
           token: ${{ secrets.PAT }} 
           repository: githubocto/next-devex-workflows # repo to send event to
