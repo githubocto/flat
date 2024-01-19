@@ -199,7 +199,7 @@ A signed number describing the number of bytes that changed in this run. If the 
 
 ## Postprocessing
 
-You can add a `postprocess` input in the Action which is path to a [deno](https://deno.land) JavaScript or Typescript script that will be invoked to postprocess your data after it is fetched. This path is relative to the root of your repo.
+You can add a `postprocess` input in the Action which is path to a [deno](https://deno.land) JavaScript or TypeScript script that will be invoked to postprocess your data after it is fetched. This path is relative to the root of your repo.
 
 The script can use either `Deno.args[0]` or the name of the `downloaded_filename` to access the file fetched by Flat Data.
 
