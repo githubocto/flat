@@ -35,7 +35,7 @@
     "pg": "^8.5.1",
     "reflect-metadata": "^0.1.13",
     "sqlite3": "^5.1.6",
-    "typeorm": "^0.2.31",
+    "typeorm": "^0.3.26",
     "zod": "^3.0.0-alpha.4"
   },
   "devDependencies": {
